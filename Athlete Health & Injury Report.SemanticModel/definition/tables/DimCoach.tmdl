@@ -1,0 +1,39 @@
+table DimCoach
+	lineageTag: 7f5e53d0-d722-42e3-8f78-d21bf7a821a5
+
+	column CoachDimKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 79c6f3a0-b639-4a31-8cbe-36ea93a5c8e7
+		summarizeBy: none
+		sourceColumn: CoachDimKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column CoachTrainerName
+		dataType: string
+		lineageTag: b0421c63-6b94-4b2f-a68a-ee95d29fa12b
+		summarizeBy: none
+		sourceColumn: CoachTrainerName
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimCoach = m
+		mode: import
+		queryGroup: 'Dim Tables'
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents(#"Folder Source" & #"File Source"), null, true),
+				    DimCoach_Sheet = Source{[Item="DimCoach",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(DimCoach_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"CoachDimKey", Int64.Type}, {"CoachTrainerName", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

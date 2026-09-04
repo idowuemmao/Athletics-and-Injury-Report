@@ -1,0 +1,71 @@
+table DimInjuryType
+	lineageTag: a59e8f4c-d161-4973-a23f-b080839e9f38
+
+	column InjuryTypeDimKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 0b943413-9dc1-4b33-b605-aca4e7f3fb0f
+		summarizeBy: none
+		sourceColumn: InjuryTypeDimKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column InjuryType
+		dataType: string
+		lineageTag: 0ec8a82c-6331-4b4b-8d39-a2ad7c719ca6
+		summarizeBy: none
+		sourceColumn: InjuryType
+
+		annotation SummarizationSetBy = Automatic
+
+	column BodyPart
+		dataType: string
+		lineageTag: 49849b51-e89a-43a5-a749-b197c25c3003
+		summarizeBy: none
+		sourceColumn: BodyPart
+
+		annotation SummarizationSetBy = Automatic
+
+	column Severity
+		dataType: string
+		lineageTag: 26be70d2-cf48-46f6-bf87-0e2e84a9659f
+		summarizeBy: none
+		sourceColumn: Severity
+
+		annotation SummarizationSetBy = Automatic
+
+	column InjuryCause
+		dataType: string
+		lineageTag: 23d33136-bcee-49ea-aa51-bb52d0cac2d8
+		summarizeBy: none
+		sourceColumn: InjuryCause
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsRecurrentInjury
+		dataType: string
+		lineageTag: b596e025-3e8d-4ab4-bf81-193154c1b7ce
+		summarizeBy: none
+		sourceColumn: IsRecurrentInjury
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimInjuryType = m
+		mode: import
+		queryGroup: 'Dim Tables'
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents(#"Folder Source" & #"File Source"), null, true),
+				    DimInjuryType_Sheet = Source{[Item="DimInjuryType",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(DimInjuryType_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"InjuryTypeDimKey", Int64.Type}, {"InjuryType", type text}, {"BodyPart", type text}, {"Severity", type text}, {"InjuryCause", type text}, {"IsRecurrentInjury", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

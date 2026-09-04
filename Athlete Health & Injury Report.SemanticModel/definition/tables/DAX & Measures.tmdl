@@ -1,0 +1,1607 @@
+table 'DAX & Measures'
+	lineageTag: dcaf97b6-9344-4e09-9ccd-1e0e19040d64
+
+	measure 'Total Injuries' = COUNT(FactInjuries[InjuryID])
+		formatString: #,0.00
+		displayFolder: Aggregate Measures
+		lineageTag: d437d8d0-e968-4234-895a-acfd5cd8a301
+
+	measure 'Avg Recovery(Days)' = AVERAGE(FactInjuries[DaysToRecovery])
+		formatString: #,0
+		displayFolder: Average Measures
+		lineageTag: 1d95691c-649a-495c-a9c1-53d4f241a559
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Severe Injury' =
+			
+			CALCULATE([Total Injuries], DimInjuryType[Severity] = "Severe")
+		formatString: #,0.00
+		displayFolder: Aggregate Measures
+		lineageTag: a53372f2-4a8c-4c40-93a8-303732ada02e
+
+	measure '% Severe Injuries' = DIVIDE([Severe Injury], [Total Injuries],0)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: % of Total
+		lineageTag: 78d78ec1-3601-4894-a841-ec242466671b
+
+	measure 'Cost per Injury' = AVERAGE(FactInjuries[CostOfTreatmentEuros])
+		formatString: #,0.00
+		displayFolder: Aggregate Measures
+		lineageTag: 9564d186-3bd2-4b9c-b0da-d820df2a2284
+
+	measure 'Total Injuries MoM%' =
+			
+			IF(
+				ISFILTERED('DimCalender'[Date]),
+				ERROR("Time intelligence quick measures can only be grouped or filtered by the Power BI-provided date hierarchy or primary date column."),
+				VAR __PREV_MONTH = CALCULATE([Total Injuries], DATEADD('DimCalender'[Date].[Date], -1, MONTH))
+				RETURN
+					DIVIDE([Total Injuries] - __PREV_MONTH, __PREV_MONTH)
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Time Intelligence
+		lineageTag: ea587e8b-c67e-4863-8a57-45e5b9a9a83f
+
+		extendedProperty MeasureTemplate =
+				{
+				  "version": 0,
+				  "daxTemplateName": "MonthOverMonth"
+				}
+
+		changedProperty = FormatString
+
+	measure 'Median Days to Recovery' = MEDIAN(FactInjuries[DaysToRecovery])
+		formatString: 0.00
+		displayFolder: Aggregate Measures
+		lineageTag: 9664808f-ba10-4783-a0d7-3cf78b0e8e9e
+
+	measure 'Total Minutes Played' = SUM(FactInjuries[MinutesPlayedLast30Days])
+		formatString: #,0.00
+		displayFolder: Aggregate Measures
+		lineageTag: 56348aa0-eed5-4a9a-a841-b7ac688e229c
+
+	measure 'Total Injuries QoQ%' =
+			
+			IF(
+				ISFILTERED('DimCalender'[Date]),
+				ERROR("Time intelligence quick measures can only be grouped or filtered by the Power BI-provided date hierarchy or primary date column."),
+				VAR __PREV_QUARTER =
+					CALCULATE(
+						[Total Injuries],
+						DATEADD('DimCalender'[Date].[Date], -1, QUARTER)
+					)
+				RETURN
+					DIVIDE([Total Injuries] - __PREV_QUARTER, __PREV_QUARTER)
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Time Intelligence
+		lineageTag: 3d393b77-3736-44a6-8ea1-63bdea0f3888
+
+		extendedProperty MeasureTemplate =
+				{
+				  "version": 0,
+				  "daxTemplateName": "QuarterOverQuarter"
+				}
+
+		changedProperty = FormatString
+
+	measure 'Fully Recovered' =
+			
+			CALCULATE([Total Injuries], DimTreatment[Outcome] = "Fully Recovered")
+		formatString: #,0.00
+		displayFolder: Aggregate Measures
+		lineageTag: 213b0199-f17e-4243-857e-40b01e539775
+
+	measure '% fully recovered' =
+			
+			DIVIDE([Fully Recovered], [Total Injuries],0)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: % of Total
+		lineageTag: 934fd6c3-9324-459f-871a-a9b46c8e9a60
+
+	measure '% Reoccuring' =
+			
+			VAR numberOfReoccuring = CALCULATE([Total Injuries], DimInjuryType[IsRecurrentInjury] = "Yes")
+			RETURN DIVIDE(numberOfReoccuring , [Total Injuries], 0)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: % of Total
+		lineageTag: 2f097217-362c-49fe-8993-642efe7d4ce7
+
+	measure 'Treatment Cost' = SUM(FactInjuries[CostOfTreatmentEuros])
+		formatString: "€"\ #,0.00;-"€"\ #,0.00;"€"\ #,0.00
+		displayFolder: Aggregate Measures
+		lineageTag: 1158df20-834f-4646-a176-09a2d2c517fc
+
+	measure 'Date Range' =
+			
+			VAR mindate = FORMAT(MIN(DimCalender[Date]),"dd mmm yy")
+			var maxdate = FORMAT(MAX(DimCalender[Date]), "dd mmm yy")
+			RETURN "Showing Overview and Outcome distribution from "& mindate & " - " & maxdate
+		displayFolder: Text Measures
+		lineageTag: 1f911759-906b-40f2-955f-48664119ec4b
+
+	measure 'High Risk Players' =
+			
+			CALCULATE(DISTINCTCOUNT(FactInjuries[PlayerDimKey]), FactInjuries[Player Risk] = "High Risk 90+")
+		formatString: #,0.00
+		displayFolder: Aggregate Measures
+		lineageTag: dfe36a36-8968-4135-aef6-e3a753bfc024
+
+	measure TopInjuryType = ```
+			
+			VAR TopPlayer =
+			    TOPN(
+			        1,
+			        SUMMARIZE(
+			            FactInjuries,
+			            DimInjuryType[InjuryType],
+			            "InjuryCount", COUNT(FactInjuries[InjuryID])
+			        ),
+			        [InjuryCount], DESC
+			    )
+			RETURN
+			    CONCATENATEX(TopPlayer,DimInjuryType[InjuryType], ", ")
+			
+			```
+		displayFolder: Text Measures
+		lineageTag: 13670136-a206-42cd-9bf1-1603b4302910
+
+	measure TopInjuryCause = ```
+			
+			VAR InjuryCause =
+			    TOPN(
+			        1,
+			        SUMMARIZE(
+			            FactInjuries,
+			            DimInjuryType[InjuryCause],
+			            "InjuryCount", COUNT(FactInjuries[InjuryID])
+			        ),
+			        [InjuryCount], DESC
+			    )
+			RETURN
+			    CONCATENATEX(InjuryCause, DimInjuryType[InjuryCause], ", ")
+			
+			```
+		displayFolder: Text Measures
+		lineageTag: b23f9513-3b08-4269-8a8d-9ff92f013c64
+
+	measure MostEffectiveTreatment = ```
+			
+			VAR TopTreatment =
+			    TOPN(
+			        1,
+			        SUMMARIZE(
+			            FactInjuries,
+			            DimTreatment[TreatmentMethod],
+			            "RecoveredCount",
+			                CALCULATE(
+			                    COUNTROWS(FactInjuries),
+			                    DimTreatment[Outcome] = "Fully Recovered"
+			                )
+			        ),
+			        [RecoveredCount], DESC
+			    )
+			RETURN
+			    CONCATENATEX(TopTreatment, DimTreatment[TreatmentMethod], ", ")
+			
+			```
+		displayFolder: Text Measures
+		lineageTag: 85570ede-640d-4113-b613-99f42d9c48a1
+
+	measure 'Hand Injury' =
+			
+			VAR bodypart = "Hand"
+			VAR no = CALCULATE([Total Injuries], DimInjuryType[BodyPart] = bodypart)
+			VAR perchand = DIVIDE(no, [Total Injuries],0)
+			VAR treatment =
+			    TOPN(
+			        1,
+			        SUMMARIZE(
+			            FactInjuries,
+			            DimTreatment[TreatmentMethod],
+			            "RecoveredCount",
+			                CALCULATE(
+			                    COUNTROWS(FactInjuries),
+			                    DimTreatment[Outcome] = "Fully Recovered",
+			                    DimInjuryType[BodyPart] = bodypart
+			                )
+			        ),
+			        [RecoveredCount], DESC
+			    )
+			VAR treatmentName = CONCATENATEX(treatment, DimTreatment[TreatmentMethod], ", ")
+			VAR TopSport =
+			    TOPN(
+			        1,
+			        SUMMARIZE(
+			            FactInjuries,
+			            DimClub[Sport],
+			            "InjuryCount",
+			                CALCULATE(
+			                    COUNTROWS(FactInjuries),
+			                    DimInjuryType[BodyPart] = bodypart
+			                )
+			        ),
+			        [InjuryCount], DESC
+			    )
+			VAR sportname = CONCATENATEX(TopSport, DimClub[Sport], ", ")
+			
+			RETURN bodypart & ": "& no &"nrs | " & FORMAT(perchand,"0.00%") & " | " & treatmentName & " | " & sportname
+		displayFolder: Body Part
+		lineageTag: ef58f4cd-fd71-45a1-8a10-eb50d9df5150
+
+	measure 'Ribs Injury' =
+			
+			VAR bodypart = "Ribs"
+			VAR no = CALCULATE([Total Injuries], DimInjuryType[BodyPart] = bodypart)
+			VAR perchand = DIVIDE(no, [Total Injuries],0)
+			VAR treatment =
+			    TOPN(
+			        1,
+			        SUMMARIZE(
+			            FactInjuries,
+			            DimTreatment[TreatmentMethod],
+			            "RecoveredCount",
+			                CALCULATE(
+			                    COUNTROWS(FactInjuries),
+			                    DimTreatment[Outcome] = "Fully Recovered",
+			                    DimInjuryType[BodyPart] = bodypart
+			                )
+			        ),
+			        [RecoveredCount], DESC
+			    )
+			VAR treatmentName = CONCATENATEX(treatment, DimTreatment[TreatmentMethod], ", ")
+			VAR TopSport =
+			    TOPN(
+			        1,
+			        SUMMARIZE(
+			            FactInjuries,
+			            DimClub[Sport],
+			            "InjuryCount",
+			                CALCULATE(
+			                    COUNTROWS(FactInjuries),
+			                    DimInjuryType[BodyPart] = bodypart
+			                )
+			        ),
+			        [InjuryCount], DESC
+			    )
+			VAR sportname = CONCATENATEX(TopSport, DimClub[Sport], ", ")
+			
+			RETURN bodypart & ": "& no &"nrs | " & FORMAT(perchand,"0.00%") & " | " & treatmentName & " | " & sportname
+		displayFolder: Body Part
+		lineageTag: 9a99468f-6094-4a07-905e-6c8d2492ac3e
+
+	measure 'Knee Injury' =
+			
+			VAR bodypart = "Knee"
+			VAR no = CALCULATE([Total Injuries], DimInjuryType[BodyPart] = bodypart)
+			VAR perchand = DIVIDE(no, [Total Injuries],0)
+			VAR treatment =
+			    TOPN(
+			        1,
+			        SUMMARIZE(
+			            FactInjuries,
+			            DimTreatment[TreatmentMethod],
+			            "RecoveredCount",
+			                CALCULATE(
+			                    COUNTROWS(FactInjuries),
+			                    DimTreatment[Outcome] = "Fully Recovered",
+			                    DimInjuryType[BodyPart] = bodypart
+			                )
+			        ),
+			        [RecoveredCount], DESC
+			    )
+			VAR treatmentName = CONCATENATEX(treatment, DimTreatment[TreatmentMethod], ", ")
+			VAR TopSport =
+			    TOPN(
+			        1,
+			        SUMMARIZE(
+			            FactInjuries,
+			            DimClub[Sport],
+			            "InjuryCount",
+			                CALCULATE(
+			                    COUNTROWS(FactInjuries),
+			                    DimInjuryType[BodyPart] = bodypart
+			                )
+			        ),
+			        [InjuryCount], DESC
+			    )
+			VAR sportname = CONCATENATEX(TopSport, DimClub[Sport], ", ")
+			
+			RETURN bodypart & ": "& FORMAT(no,"#,##0") &"nrs | " & FORMAT(perchand,"0.00%") & " | " & treatmentName & " | " & sportname
+		displayFolder: Body Part
+		lineageTag: ec1fd9cb-67dd-49de-8758-58283dfc82c3
+
+	measure 'Back Injury' =
+			
+			VAR bodypart = "Back"
+			VAR no = CALCULATE([Total Injuries], DimInjuryType[BodyPart] = bodypart)
+			VAR perchand = DIVIDE(no, [Total Injuries],0)
+			VAR treatment =
+			    TOPN(
+			        1,
+			        SUMMARIZE(
+			            FactInjuries,
+			            DimTreatment[TreatmentMethod],
+			            "RecoveredCount",
+			                CALCULATE(
+			                    COUNTROWS(FactInjuries),
+			                    DimTreatment[Outcome] = "Fully Recovered",
+			                    DimInjuryType[BodyPart] = bodypart
+			                )
+			        ),
+			        [RecoveredCount], DESC
+			    )
+			VAR treatmentName = CONCATENATEX(treatment, DimTreatment[TreatmentMethod], ", ")
+			VAR TopSport =
+			    TOPN(
+			        1,
+			        SUMMARIZE(
+			            FactInjuries,
+			            DimClub[Sport],
+			            "InjuryCount",
+			                CALCULATE(
+			                    COUNTROWS(FactInjuries),
+			                    DimInjuryType[BodyPart] = bodypart
+			                )
+			        ),
+			        [InjuryCount], DESC
+			    )
+			VAR sportname = CONCATENATEX(TopSport, DimClub[Sport], ", ")
+			
+			RETURN bodypart & ": "& FORMAT(no,"#,##0") &"nrs | " & FORMAT(perchand,"0.00%") & " | " & treatmentName & " | " & sportname
+		displayFolder: Body Part
+		lineageTag: a879d99e-2636-45d6-8742-2382ec2b7933
+
+	measure 'Hamstring Injury' =
+			
+			VAR bodypart = "Hamstring"
+			VAR no = CALCULATE([Total Injuries], DimInjuryType[BodyPart] = bodypart)
+			VAR perchand = DIVIDE(no, [Total Injuries],0)
+			VAR treatment =
+			    TOPN(
+			        1,
+			        SUMMARIZE(
+			            FactInjuries,
+			            DimTreatment[TreatmentMethod],
+			            "RecoveredCount",
+			                CALCULATE(
+			                    COUNTROWS(FactInjuries),
+			                    DimTreatment[Outcome] = "Fully Recovered",
+			                    DimInjuryType[BodyPart] = bodypart
+			                )
+			        ),
+			        [RecoveredCount], DESC
+			    )
+			VAR treatmentName = CONCATENATEX(treatment, DimTreatment[TreatmentMethod], ", ")
+			VAR TopSport =
+			    TOPN(
+			        1,
+			        SUMMARIZE(
+			            FactInjuries,
+			            DimClub[Sport],
+			            "InjuryCount",
+			                CALCULATE(
+			                    COUNTROWS(FactInjuries),
+			                    DimInjuryType[BodyPart] = bodypart
+			                )
+			        ),
+			        [InjuryCount], DESC
+			    )
+			VAR sportname = CONCATENATEX(TopSport, DimClub[Sport], ", ")
+			
+			RETURN bodypart & ": "& FORMAT(no,"#,##0") &"nrs | " & FORMAT(perchand,"0.00%") & " | " & treatmentName & " | " & sportname
+		displayFolder: Body Part
+		lineageTag: 8b5956ec-89af-43bc-86f6-c25397118198
+
+	measure 'Jaw Injury' =
+			
+			VAR bodypart = "Jaw"
+			VAR no = CALCULATE([Total Injuries], DimInjuryType[BodyPart] = bodypart)
+			VAR perchand = DIVIDE(no, [Total Injuries],0)
+			VAR treatment =
+			    TOPN(
+			        1,
+			        SUMMARIZE(
+			            FactInjuries,
+			            DimTreatment[TreatmentMethod],
+			            "RecoveredCount",
+			                CALCULATE(
+			                    COUNTROWS(FactInjuries),
+			                    DimTreatment[Outcome] = "Fully Recovered",
+			                    DimInjuryType[BodyPart] = bodypart
+			                )
+			        ),
+			        [RecoveredCount], DESC
+			    )
+			VAR treatmentName = CONCATENATEX(treatment, DimTreatment[TreatmentMethod], ", ")
+			VAR TopSport =
+			    TOPN(
+			        1,
+			        SUMMARIZE(
+			            FactInjuries,
+			            DimClub[Sport],
+			            "InjuryCount",
+			                CALCULATE(
+			                    COUNTROWS(FactInjuries),
+			                    DimInjuryType[BodyPart] = bodypart
+			                )
+			        ),
+			        [InjuryCount], DESC
+			    )
+			VAR sportname = CONCATENATEX(TopSport, DimClub[Sport], ", ")
+			
+			RETURN bodypart & ": "& no &"nrs | " & FORMAT(perchand,"0.00%") & " | " & treatmentName & " | " & sportname
+		displayFolder: Body Part
+		lineageTag: 452d1c89-14c7-431a-b1e4-ae77d59f2290
+
+	measure 'Elbow Injury' =
+			
+			VAR bodypart = "Elbow"
+			VAR nohand = CALCULATE([Total Injuries], DimInjuryType[BodyPart] = bodypart)
+			VAR perchand = DIVIDE(nohand, [Total Injuries],0)
+			VAR treatment =
+			    TOPN(
+			        1,
+			        SUMMARIZE(
+			            FactInjuries,
+			            DimTreatment[TreatmentMethod],
+			            "RecoveredCount",
+			                CALCULATE(
+			                    COUNTROWS(FactInjuries),
+			                    DimTreatment[Outcome] = "Fully Recovered",
+			                    DimInjuryType[BodyPart] = bodypart
+			                )
+			        ),
+			        [RecoveredCount], DESC
+			    )
+			VAR treatmentName = CONCATENATEX(treatment, DimTreatment[TreatmentMethod], ", ")
+			VAR TopSport =
+			    TOPN(
+			        1,
+			        SUMMARIZE(
+			            FactInjuries,
+			            DimClub[Sport],
+			            "InjuryCount",
+			                CALCULATE(
+			                    COUNTROWS(FactInjuries),
+			                    DimInjuryType[BodyPart] = bodypart
+			                )
+			        ),
+			        [InjuryCount], DESC
+			    )
+			VAR sportname = CONCATENATEX(TopSport, DimClub[Sport], ", ")
+			
+			RETURN bodypart & ": "& nohand &"nrs | " & FORMAT(perchand,"0.00%") & " | " & treatmentName & " | " & sportname
+		displayFolder: Body Part
+		lineageTag: 0b6466a1-756f-49db-81a2-656693bf4bdf
+
+	measure 'Shoulder Injury' =
+			
+			VAR bodypart = "Shoulder"
+			VAR no = CALCULATE([Total Injuries], DimInjuryType[BodyPart] = bodypart)
+			VAR perchand = DIVIDE(no, [Total Injuries],0)
+			VAR treatment =
+			    TOPN(
+			        1,
+			        SUMMARIZE(
+			            FactInjuries,
+			            DimTreatment[TreatmentMethod],
+			            "RecoveredCount",
+			                CALCULATE(
+			                    COUNTROWS(FactInjuries),
+			                    DimTreatment[Outcome] = "Fully Recovered",
+			                    DimInjuryType[BodyPart] = bodypart
+			                )
+			        ),
+			        [RecoveredCount], DESC
+			    )
+			VAR treatmentName = CONCATENATEX(treatment, DimTreatment[TreatmentMethod], ", ")
+			VAR TopSport =
+			    TOPN(
+			        1,
+			        SUMMARIZE(
+			            FactInjuries,
+			            DimClub[Sport],
+			            "InjuryCount",
+			                CALCULATE(
+			                    COUNTROWS(FactInjuries),
+			                    DimInjuryType[BodyPart] = bodypart
+			                )
+			        ),
+			        [InjuryCount], DESC
+			    )
+			VAR sportname = CONCATENATEX(TopSport, DimClub[Sport], ", ")
+			
+			RETURN bodypart & ": "& FORMAT(no,"#,##0") &"nrs | " & FORMAT(perchand,"0.00%") & " | " & treatmentName & " | " & sportname
+		displayFolder: Body Part
+		lineageTag: f4d32466-2588-4989-9e03-aba8288a7442
+
+	measure 'Hip Injury' =
+			
+			VAR bodypart = "Hip"
+			VAR no = CALCULATE([Total Injuries], DimInjuryType[BodyPart] = bodypart)
+			VAR perchand = DIVIDE(no, [Total Injuries],0)
+			VAR treatment =
+			    TOPN(
+			        1,
+			        SUMMARIZE(
+			            FactInjuries,
+			            DimTreatment[TreatmentMethod],
+			            "RecoveredCount",
+			                CALCULATE(
+			                    COUNTROWS(FactInjuries),
+			                    DimTreatment[Outcome] = "Fully Recovered",
+			                    DimInjuryType[BodyPart] = bodypart
+			                )
+			        ),
+			        [RecoveredCount], DESC
+			    )
+			VAR treatmentName = CONCATENATEX(treatment, DimTreatment[TreatmentMethod], ", ")
+			VAR TopSport =
+			    TOPN(
+			        1,
+			        SUMMARIZE(
+			            FactInjuries,
+			            DimClub[Sport],
+			            "InjuryCount",
+			                CALCULATE(
+			                    COUNTROWS(FactInjuries),
+			                    DimInjuryType[BodyPart] = bodypart
+			                )
+			        ),
+			        [InjuryCount], DESC
+			    )
+			VAR sportname = CONCATENATEX(TopSport, DimClub[Sport], ", ")
+			
+			RETURN bodypart & ": "& no &"nrs | " & FORMAT(perchand,"0.00%") & " | " & treatmentName & " | " & sportname
+		displayFolder: Body Part
+		lineageTag: 6ae6e812-c3d4-40ab-8767-a1a2cd9c5767
+
+	measure 'Achilles Injury' =
+			
+			VAR bodypart = "Achilles"
+			VAR no = CALCULATE([Total Injuries], DimInjuryType[BodyPart] = bodypart)
+			VAR perchand = DIVIDE(no, [Total Injuries],0)
+			VAR treatment =
+			    TOPN(
+			        1,
+			        SUMMARIZE(
+			            FactInjuries,
+			            DimTreatment[TreatmentMethod],
+			            "RecoveredCount",
+			                CALCULATE(
+			                    COUNTROWS(FactInjuries),
+			                    DimTreatment[Outcome] = "Fully Recovered",
+			                    DimInjuryType[BodyPart] = bodypart
+			                )
+			        ),
+			        [RecoveredCount], DESC
+			    )
+			VAR treatmentName = CONCATENATEX(treatment, DimTreatment[TreatmentMethod], ", ")
+			VAR TopSport =
+			    TOPN(
+			        1,
+			        SUMMARIZE(
+			            FactInjuries,
+			            DimClub[Sport],
+			            "InjuryCount",
+			                CALCULATE(
+			                    COUNTROWS(FactInjuries),
+			                    DimInjuryType[BodyPart] = bodypart
+			                )
+			        ),
+			        [InjuryCount], DESC
+			    )
+			VAR sportname = CONCATENATEX(TopSport, DimClub[Sport], ", ")
+			
+			RETURN bodypart & ": "& no &"nrs | " & FORMAT(perchand,"0.00%") & " | " & treatmentName & " | " & sportname
+		displayFolder: Body Part
+		lineageTag: 82153553-fbbc-409f-ad78-fd04a2a7f129
+
+	measure 'Calf Injury' =
+			
+			VAR bodypart = "Calf"
+			VAR no = CALCULATE([Total Injuries], DimInjuryType[BodyPart] = bodypart)
+			VAR perchand = DIVIDE(no, [Total Injuries],0)
+			VAR treatment =
+			    TOPN(
+			        1,
+			        SUMMARIZE(
+			            FactInjuries,
+			            DimTreatment[TreatmentMethod],
+			            "RecoveredCount",
+			                CALCULATE(
+			                    COUNTROWS(FactInjuries),
+			                    DimTreatment[Outcome] = "Fully Recovered",
+			                    DimInjuryType[BodyPart] = bodypart
+			                )
+			        ),
+			        [RecoveredCount], DESC
+			    )
+			VAR treatmentName = CONCATENATEX(treatment, DimTreatment[TreatmentMethod], ", ")
+			VAR TopSport =
+			    TOPN(
+			        1,
+			        SUMMARIZE(
+			            FactInjuries,
+			            DimClub[Sport],
+			            "InjuryCount",
+			                CALCULATE(
+			                    COUNTROWS(FactInjuries),
+			                    DimInjuryType[BodyPart] = bodypart
+			                )
+			        ),
+			        [InjuryCount], DESC
+			    )
+			VAR sportname = CONCATENATEX(TopSport, DimClub[Sport], ", ")
+			
+			RETURN bodypart & ": "& no &"nrs | " & FORMAT(perchand,"0.00%") & " | " & treatmentName & " | " & sportname
+		displayFolder: Body Part
+		lineageTag: 4a8cec0c-b3a2-4f2c-8e03-6e57df9fbf62
+
+	measure 'Ankle Injury' =
+			
+			VAR bodypart = "Ankle"
+			VAR no = CALCULATE([Total Injuries], DimInjuryType[BodyPart] = bodypart)
+			VAR perchand = DIVIDE(no, [Total Injuries],0)
+			VAR treatment =
+			    TOPN(
+			        1,
+			        SUMMARIZE(
+			            FactInjuries,
+			            DimTreatment[TreatmentMethod],
+			            "RecoveredCount",
+			                CALCULATE(
+			                    COUNTROWS(FactInjuries),
+			                    DimTreatment[Outcome] = "Fully Recovered",
+			                    DimInjuryType[BodyPart] = bodypart
+			                )
+			        ),
+			        [RecoveredCount], DESC
+			    )
+			VAR treatmentName = CONCATENATEX(treatment, DimTreatment[TreatmentMethod], ", ")
+			VAR TopSport =
+			    TOPN(
+			        1,
+			        SUMMARIZE(
+			            FactInjuries,
+			            DimClub[Sport],
+			            "InjuryCount",
+			                CALCULATE(
+			                    COUNTROWS(FactInjuries),
+			                    DimInjuryType[BodyPart] = bodypart
+			                )
+			        ),
+			        [InjuryCount], DESC
+			    )
+			VAR sportname = CONCATENATEX(TopSport, DimClub[Sport], ", ")
+			
+			RETURN bodypart & ": "& FORMAT(no,"#,##0") &"nrs | " & FORMAT(perchand,"0.00%") & " | " & treatmentName & " | " & sportname
+		displayFolder: Body Part
+		lineageTag: 73893ec2-3b25-4fb7-ac48-c2c767800ad6
+
+	measure 'Shin Injury' =
+			
+			VAR bodypart = "Shin"
+			VAR no = CALCULATE([Total Injuries], DimInjuryType[BodyPart] = bodypart)
+			VAR perchand = DIVIDE(no, [Total Injuries],0)
+			VAR treatment =
+			    TOPN(
+			        1,
+			        SUMMARIZE(
+			            FactInjuries,
+			            DimTreatment[TreatmentMethod],
+			            "RecoveredCount",
+			                CALCULATE(
+			                    COUNTROWS(FactInjuries),
+			                    DimTreatment[Outcome] = "Fully Recovered",
+			                    DimInjuryType[BodyPart] = bodypart
+			                )
+			        ),
+			        [RecoveredCount], DESC
+			    )
+			VAR treatmentName = CONCATENATEX(treatment, DimTreatment[TreatmentMethod], ", ")
+			VAR TopSport =
+			    TOPN(
+			        1,
+			        SUMMARIZE(
+			            FactInjuries,
+			            DimClub[Sport],
+			            "InjuryCount",
+			                CALCULATE(
+			                    COUNTROWS(FactInjuries),
+			                    DimInjuryType[BodyPart] = bodypart
+			                )
+			        ),
+			        [InjuryCount], DESC
+			    )
+			VAR sportname = CONCATENATEX(TopSport, DimClub[Sport], ", ")
+			
+			RETURN bodypart & ": "& no &"nrs | " & FORMAT(perchand,"0.00%") & " | " & treatmentName & " | " & sportname
+		displayFolder: Body Part
+		lineageTag: 85622c10-34c4-4474-a183-07a80afbdcfb
+
+	measure 'Wrist Injury' =
+			
+			VAR bodypart = "Wrist"
+			VAR no = CALCULATE([Total Injuries], DimInjuryType[BodyPart] = bodypart)
+			VAR perchand = DIVIDE(no, [Total Injuries],0)
+			VAR treatment =
+			    TOPN(
+			        1,
+			        SUMMARIZE(
+			            FactInjuries,
+			            DimTreatment[TreatmentMethod],
+			            "RecoveredCount",
+			                CALCULATE(
+			                    COUNTROWS(FactInjuries),
+			                    DimTreatment[Outcome] = "Fully Recovered",
+			                    DimInjuryType[BodyPart] = bodypart
+			                )
+			        ),
+			        [RecoveredCount], DESC
+			    )
+			VAR treatmentName = CONCATENATEX(treatment, DimTreatment[TreatmentMethod], ", ")
+			VAR TopSport =
+			    TOPN(
+			        1,
+			        SUMMARIZE(
+			            FactInjuries,
+			            DimClub[Sport],
+			            "InjuryCount",
+			                CALCULATE(
+			                    COUNTROWS(FactInjuries),
+			                    DimInjuryType[BodyPart] = bodypart
+			                )
+			        ),
+			        [InjuryCount], DESC
+			    )
+			VAR sportname = CONCATENATEX(TopSport, DimClub[Sport], ", ")
+			
+			RETURN bodypart & ": "& no &"nrs | " & FORMAT(perchand,"0.00%") & " | " & treatmentName & " | " & sportname
+		displayFolder: Body Part
+		lineageTag: b7df7e7d-9672-4cc4-b925-4c41fd8f0940
+
+	measure 'Nose Injury' =
+			
+			VAR bodypart = "Nose"
+			VAR no = CALCULATE([Total Injuries], DimInjuryType[BodyPart] = bodypart)
+			VAR perchand = DIVIDE(no, [Total Injuries],0)
+			VAR treatment =
+			    TOPN(
+			        1,
+			        SUMMARIZE(
+			            FactInjuries,
+			            DimTreatment[TreatmentMethod],
+			            "RecoveredCount",
+			                CALCULATE(
+			                    COUNTROWS(FactInjuries),
+			                    DimTreatment[Outcome] = "Fully Recovered",
+			                    DimInjuryType[BodyPart] = bodypart
+			                )
+			        ),
+			        [RecoveredCount], DESC
+			    )
+			VAR treatmentName = CONCATENATEX(treatment, DimTreatment[TreatmentMethod], ", ")
+			VAR TopSport =
+			    TOPN(
+			        1,
+			        SUMMARIZE(
+			            FactInjuries,
+			            DimClub[Sport],
+			            "InjuryCount",
+			                CALCULATE(
+			                    COUNTROWS(FactInjuries),
+			                    DimInjuryType[BodyPart] = bodypart
+			                )
+			        ),
+			        [InjuryCount], DESC
+			    )
+			VAR sportname = CONCATENATEX(TopSport, DimClub[Sport], ", ")
+			
+			RETURN bodypart & ": "& no &"nrs | " & FORMAT(perchand,"0.00%") & " | " & treatmentName & " | " & sportname
+		displayFolder: Body Part
+		lineageTag: 7b572e6a-390a-4ce7-afd6-fe9b1093f9f9
+
+	measure 'Eye Injury' =
+			
+			VAR bodypart = "Eye"
+			VAR no = CALCULATE([Total Injuries], DimInjuryType[BodyPart] = bodypart)
+			VAR perchand = DIVIDE(no, [Total Injuries],0)
+			VAR treatment =
+			    TOPN(
+			        1,
+			        SUMMARIZE(
+			            FactInjuries,
+			            DimTreatment[TreatmentMethod],
+			            "RecoveredCount",
+			                CALCULATE(
+			                    COUNTROWS(FactInjuries),
+			                    DimTreatment[Outcome] = "Fully Recovered",
+			                    DimInjuryType[BodyPart] = bodypart
+			                )
+			        ),
+			        [RecoveredCount], DESC
+			    )
+			VAR treatmentName = CONCATENATEX(treatment, DimTreatment[TreatmentMethod], ", ")
+			VAR TopSport =
+			    TOPN(
+			        1,
+			        SUMMARIZE(
+			            FactInjuries,
+			            DimClub[Sport],
+			            "InjuryCount",
+			                CALCULATE(
+			                    COUNTROWS(FactInjuries),
+			                    DimInjuryType[BodyPart] = bodypart
+			                )
+			        ),
+			        [InjuryCount], DESC
+			    )
+			VAR sportname = CONCATENATEX(TopSport, DimClub[Sport], ", ")
+			
+			RETURN bodypart & ": "& no &"nrs | " & FORMAT(perchand,"0.00%") & " | " & treatmentName & " | " & sportname
+		displayFolder: Body Part
+		lineageTag: c115c1a7-d0da-47f5-ae62-e0c07688d920
+
+	measure 'Face Injury' =
+			
+			VAR bodypart = "Face"
+			VAR no = CALCULATE([Total Injuries], DimInjuryType[BodyPart] = bodypart)
+			VAR perchand = DIVIDE(no, [Total Injuries],0)
+			VAR treatment =
+			    TOPN(
+			        1,
+			        SUMMARIZE(
+			            FactInjuries,
+			            DimTreatment[TreatmentMethod],
+			            "RecoveredCount",
+			                CALCULATE(
+			                    COUNTROWS(FactInjuries),
+			                    DimTreatment[Outcome] = "Fully Recovered",
+			                    DimInjuryType[BodyPart] = bodypart
+			                )
+			        ),
+			        [RecoveredCount], DESC
+			    )
+			VAR treatmentName = CONCATENATEX(treatment, DimTreatment[TreatmentMethod], ", ")
+			VAR TopSport =
+			    TOPN(
+			        1,
+			        SUMMARIZE(
+			            FactInjuries,
+			            DimClub[Sport],
+			            "InjuryCount",
+			                CALCULATE(
+			                    COUNTROWS(FactInjuries),
+			                    DimInjuryType[BodyPart] = bodypart
+			                )
+			        ),
+			        [InjuryCount], DESC
+			    )
+			VAR sportname = CONCATENATEX(TopSport, DimClub[Sport], ", ")
+			
+			RETURN bodypart & ": "& no &"nrs | " & FORMAT(perchand,"0.00%") & " | " & treatmentName & " | " & sportname
+		displayFolder: Body Part
+		lineageTag: 36ff1b4b-f29e-4774-82a3-50f9cdf90f09
+
+	measure 'Finger Injury' = ```
+			
+			VAR bodypart = "Finger"
+			VAR no = CALCULATE([Total Injuries], DimInjuryType[BodyPart] = bodypart)
+			VAR perchand = DIVIDE(no, [Total Injuries],0)
+			VAR treatment = 
+			    TOPN(
+			        1,
+			        SUMMARIZE(
+			            FactInjuries,
+			            DimTreatment[TreatmentMethod],
+			            "RecoveredCount",
+			                CALCULATE(
+			                    COUNTROWS(FactInjuries),
+			                    DimTreatment[Outcome] = "Fully Recovered",
+			                    DimInjuryType[BodyPart] = bodypart
+			                )
+			        ),
+			        [RecoveredCount], DESC
+			    )
+			VAR treatmentName = CONCATENATEX(treatment, DimTreatment[TreatmentMethod], ", ")
+			VAR TopSport =
+			    TOPN(
+			        1,
+			        SUMMARIZE(
+			            FactInjuries,
+			            DimClub[Sport],
+			            "InjuryCount",
+			                CALCULATE(
+			                    COUNTROWS(FactInjuries),
+			                    DimInjuryType[BodyPart] = bodypart
+			                )
+			        ),
+			        [InjuryCount], DESC
+			    )
+			VAR sportname = CONCATENATEX(TopSport, DimClub[Sport], ", ")
+			
+			RETURN bodypart & ": "& no &"nrs | " & FORMAT(perchand,"0.00%") & " | " & treatmentName & " | " & sportname
+			```
+		displayFolder: Body Part
+		lineageTag: 8cafabc4-c37c-4d94-8483-9dde6c8371cb
+
+	measure 'Head Injury' =
+			
+			VAR bodypart = "Head"
+			VAR no = CALCULATE([Total Injuries], DimInjuryType[BodyPart] = bodypart)
+			VAR perchand = DIVIDE(no, [Total Injuries],0)
+			VAR treatment =
+			    TOPN(
+			        1,
+			        SUMMARIZE(
+			            FactInjuries,
+			            DimTreatment[TreatmentMethod],
+			            "RecoveredCount",
+			                CALCULATE(
+			                    COUNTROWS(FactInjuries),
+			                    DimTreatment[Outcome] = "Fully Recovered",
+			                    DimInjuryType[BodyPart] = bodypart
+			                )
+			        ),
+			        [RecoveredCount], DESC
+			    )
+			VAR treatmentName = CONCATENATEX(treatment, DimTreatment[TreatmentMethod], ", ")
+			VAR TopSport =
+			    TOPN(
+			        1,
+			        SUMMARIZE(
+			            FactInjuries,
+			            DimClub[Sport],
+			            "InjuryCount",
+			                CALCULATE(
+			                    COUNTROWS(FactInjuries),
+			                    DimInjuryType[BodyPart] = bodypart
+			                )
+			        ),
+			        [InjuryCount], DESC
+			    )
+			VAR sportname = CONCATENATEX(TopSport, DimClub[Sport], ", ")
+			
+			RETURN bodypart & ": "& FORMAT(no,"#,##0") &"nrs | " & FORMAT(perchand,"0.00%") & " | " & treatmentName & " | " & sportname
+		displayFolder: Body Part
+		lineageTag: 1ad57aa4-b89f-4b7e-9d2b-ad18bfc7302f
+
+	measure 'Foot Injury' =
+			
+			VAR bodypart = "Foot"
+			VAR no = CALCULATE([Total Injuries], DimInjuryType[BodyPart] = bodypart)
+			VAR perchand = DIVIDE(no, [Total Injuries],0)
+			VAR treatment =
+			    TOPN(
+			        1,
+			        SUMMARIZE(
+			            FactInjuries,
+			            DimTreatment[TreatmentMethod],
+			            "RecoveredCount",
+			                CALCULATE(
+			                    COUNTROWS(FactInjuries),
+			                    DimTreatment[Outcome] = "Fully Recovered",
+			                    DimInjuryType[BodyPart] = bodypart
+			                )
+			        ),
+			        [RecoveredCount], DESC
+			    )
+			VAR treatmentName = CONCATENATEX(treatment, DimTreatment[TreatmentMethod], ", ")
+			VAR TopSport =
+			    TOPN(
+			        1,
+			        SUMMARIZE(
+			            FactInjuries,
+			            DimClub[Sport],
+			            "InjuryCount",
+			                CALCULATE(
+			                    COUNTROWS(FactInjuries),
+			                    DimInjuryType[BodyPart] = bodypart
+			                )
+			        ),
+			        [InjuryCount], DESC
+			    )
+			VAR sportname = CONCATENATEX(TopSport, DimClub[Sport], ", ")
+			
+			RETURN bodypart & ": "& no &"nrs | " & FORMAT(perchand,"0.00%") & " | " & treatmentName & " | " & sportname
+		displayFolder: Body Part
+		lineageTag: 4e0f3975-4b6c-4063-a74c-2f0ad7d251e2
+
+	measure 'Total Injuries SVG' = ```
+			
+			// Static line color - use %23 instead of # for Firefox compatibility (Measure Derived from Eldersveld Modified by Kolosko)
+			VAR LineColour = "White"
+			VAR PointColour = "%663466"
+			VAR Defs = "<defs>
+			    <linearGradient id='grad' x1='0' y1='25' x2='0' y2='50' gradientUnits='userSpaceOnUse'>
+			        <stop stop-color='#663466' offset='0' />
+			        <stop stop-color='#663466' offset='0.3' />
+			        <stop stop-color='#663466' offset='1' />
+			    </linearGradient>
+			</defs>"
+			// "Date" field used in this example along the X axis
+			VAR XMinDate = MIN(DimCalender[Start of Month])
+			VAR XMaxDate = MAX(DimCalender[Start of Month])
+			
+			// Obtain overall min and overall max measure values when evaluated for each date
+			VAR YMinValue = MINX(Values(DimCalender[Start of Month]),CALCULATE([Total Injuries]))
+			VAR YMaxValue = MAXX(Values(DimCalender[Start of Month]),CALCULATE([Total Injuries]))
+			
+			// Build table of X & Y coordinates and fit to 50 x 150 viewbox
+			VAR SparklineTable = ADDCOLUMNS(
+			    SUMMARIZE('DimCalender',DimCalender[Start of Month]),
+			        "X",INT(150 * DIVIDE(DimCalender[Start of Month] - XMinDate, XMaxDate - XMinDate)),
+			        "Y",INT(50 * DIVIDE([Total Injuries] - YMinValue,YMaxValue - YMinValue)))
+			
+			// Concatenate X & Y coordinates to build the sparkline
+			VAR Lines = CONCATENATEX(SparklineTable,[X] & "," & 50-[Y]," ", DimCalender[Start of Month])
+			
+			// Last data points on the line
+			VAR LastSparkYValue = MAXX( FILTER(SparklineTable, DimCalender[Start of Month] = XMaxDate), [Y])
+			VAR LastSparkXValue = MAXX( FILTER(SparklineTable, DimCalender[Start of Month] = XMaxDate), [X])
+			
+			// Add to SVG, and verify Data Category is set to Image URL for this measure
+			VAR SVGImageURL = 
+			    "data:image/svg+xml;utf8," & 
+			    --- gradient---
+			    "<svg xmlns='http://www.w3.org/2000/svg' x='0px' y='0px' viewBox='-7 -7 164 64'>" & Defs & 
+			     "<polyline fill='url(#grad)' fill-opacity='0.3' stroke='transparent' 
+			      stroke-width='0' points=' 0 50 " & Lines & 
+			      " 150 150 Z '/>" &
+			    --- Lines---
+			    "<polyline 
+			        fill='transparent' stroke='" & LineColour & "' 
+			        stroke-linecap='round' stroke-linejoin='round' 
+			        stroke-width='2' points=' " & Lines & 
+			      " '/>" &
+			    --- Last Point---
+			        "<circle cx='"& LastSparkXValue & "' cy='" & 50 - LastSparkYValue & "' r='4' stroke='" & LineColour & "' stroke-width='2' fill='" & PointColour & "' />" &
+			        "</svg>"
+			RETURN SVGImageURL
+			```
+		displayFolder: SVG Measures
+		lineageTag: 0045bc34-a45a-4bfb-ba1b-9b483046ae9b
+
+	measure 'Avg Recovery Day SVG' = ```
+			
+			// Static line color - use %23 instead of # for Firefox compatibility (Measure Derived from Eldersveld Modified by Kolosko)
+			VAR LineColour = "White"
+			VAR PointColour = "%663466"
+			VAR Defs = "<defs>
+			    <linearGradient id='grad' x1='0' y1='25' x2='0' y2='50' gradientUnits='userSpaceOnUse'>
+			        <stop stop-color='#663466' offset='0' />
+			        <stop stop-color='#663466' offset='0.3' />
+			        <stop stop-color='#663466' offset='1' />
+			    </linearGradient>
+			</defs>"
+			// "Date" field used in this example along the X axis
+			VAR XMinDate = MIN(DimCalender[Start of Month])
+			VAR XMaxDate = MAX(DimCalender[Start of Month])
+			
+			// Obtain overall min and overall max measure values when evaluated for each date
+			VAR YMinValue = MINX(Values(DimCalender[Start of Month]),CALCULATE([Avg Recovery(Days)]))
+			VAR YMaxValue = MAXX(Values(DimCalender[Start of Month]),CALCULATE([Avg Recovery(Days)]))
+			
+			// Build table of X & Y coordinates and fit to 50 x 150 viewbox
+			VAR SparklineTable = ADDCOLUMNS(
+			    SUMMARIZE('DimCalender',DimCalender[Start of Month]),
+			        "X",INT(150 * DIVIDE(DimCalender[Start of Month] - XMinDate, XMaxDate - XMinDate)),
+			        "Y",INT(50 * DIVIDE([Avg Recovery(Days)] - YMinValue,YMaxValue - YMinValue)))
+			
+			// Concatenate X & Y coordinates to build the sparkline
+			VAR Lines = CONCATENATEX(SparklineTable,[X] & "," & 50-[Y]," ", DimCalender[Start of Month])
+			
+			// Last data points on the line
+			VAR LastSparkYValue = MAXX( FILTER(SparklineTable, DimCalender[Start of Month] = XMaxDate), [Y])
+			VAR LastSparkXValue = MAXX( FILTER(SparklineTable, DimCalender[Start of Month] = XMaxDate), [X])
+			
+			// Add to SVG, and verify Data Category is set to Image URL for this measure
+			VAR SVGImageURL = 
+			    "data:image/svg+xml;utf8," & 
+			    --- gradient---
+			    "<svg xmlns='http://www.w3.org/2000/svg' x='0px' y='0px' viewBox='-7 -7 164 64'>" & Defs & 
+			     "<polyline fill='url(#grad)' fill-opacity='0.3' stroke='transparent' 
+			      stroke-width='0' points=' 0 50 " & Lines & 
+			      " 150 150 Z '/>" &
+			    --- Lines---
+			    "<polyline 
+			        fill='transparent' stroke='" & LineColour & "' 
+			        stroke-linecap='round' stroke-linejoin='round' 
+			        stroke-width='2' points=' " & Lines & 
+			      " '/>" &
+			    --- Last Point---
+			        "<circle cx='"& LastSparkXValue & "' cy='" & 50 - LastSparkYValue & "' r='4' stroke='" & LineColour & "' stroke-width='2' fill='" & PointColour & "' />" &
+			        "</svg>"
+			RETURN SVGImageURL
+			```
+		displayFolder: SVG Measures
+		lineageTag: 938543e2-7a7a-47e0-9f82-aa258c2b3a9a
+
+	measure 'Avg Cost/Injury SVG' = ```
+			
+			// Static line color - use %23 instead of # for Firefox compatibility (Measure Derived from Eldersveld Modified by Kolosko)
+			VAR LineColour = "White"
+			VAR PointColour = "%663466"
+			VAR Defs = "<defs>
+			    <linearGradient id='grad' x1='0' y1='25' x2='0' y2='50' gradientUnits='userSpaceOnUse'>
+			        <stop stop-color='#663466' offset='0' />
+			        <stop stop-color='#663466' offset='0.3' />
+			        <stop stop-color='#663466' offset='1' />
+			    </linearGradient>
+			</defs>"
+			// "Date" field used in this example along the X axis
+			VAR XMinDate = MIN(DimCalender[Start of Month])
+			VAR XMaxDate = MAX(DimCalender[Start of Month])
+			
+			// Obtain overall min and overall max measure values when evaluated for each date
+			VAR YMinValue = MINX(Values(DimCalender[Start of Month]),CALCULATE([Cost per Injury]))
+			VAR YMaxValue = MAXX(Values(DimCalender[Start of Month]),CALCULATE([Cost per Injury]))
+			
+			// Build table of X & Y coordinates and fit to 50 x 150 viewbox
+			VAR SparklineTable = ADDCOLUMNS(
+			    SUMMARIZE('DimCalender',DimCalender[Start of Month]),
+			        "X",INT(150 * DIVIDE(DimCalender[Start of Month] - XMinDate, XMaxDate - XMinDate)),
+			        "Y",INT(50 * DIVIDE([Cost per Injury] - YMinValue,YMaxValue - YMinValue)))
+			
+			// Concatenate X & Y coordinates to build the sparkline
+			VAR Lines = CONCATENATEX(SparklineTable,[X] & "," & 50-[Y]," ", DimCalender[Start of Month])
+			
+			// Last data points on the line
+			VAR LastSparkYValue = MAXX( FILTER(SparklineTable, DimCalender[Start of Month] = XMaxDate), [Y])
+			VAR LastSparkXValue = MAXX( FILTER(SparklineTable, DimCalender[Start of Month] = XMaxDate), [X])
+			
+			// Add to SVG, and verify Data Category is set to Image URL for this measure
+			VAR SVGImageURL = 
+			    "data:image/svg+xml;utf8," & 
+			    --- gradient---
+			    "<svg xmlns='http://www.w3.org/2000/svg' x='0px' y='0px' viewBox='-7 -7 164 64'>" & Defs & 
+			     "<polyline fill='url(#grad)' fill-opacity='0.3' stroke='transparent' 
+			      stroke-width='0' points=' 0 50 " & Lines & 
+			      " 150 150 Z '/>" &
+			    --- Lines---
+			    "<polyline 
+			        fill='transparent' stroke='" & LineColour & "' 
+			        stroke-linecap='round' stroke-linejoin='round' 
+			        stroke-width='2' points=' " & Lines & 
+			      " '/>" &
+			    --- Last Point---
+			        "<circle cx='"& LastSparkXValue & "' cy='" & 50 - LastSparkYValue & "' r='4' stroke='" & LineColour & "' stroke-width='2' fill='" & PointColour & "' />" &
+			        "</svg>"
+			RETURN SVGImageURL
+			```
+		displayFolder: SVG Measures
+		lineageTag: e392915f-0f93-40f8-ba76-356b332e7822
+
+	measure 'Total Cost SVG' = ```
+			
+			// Static line color - use %23 instead of # for Firefox compatibility (Measure Derived from Eldersveld Modified by Kolosko)
+			VAR LineColour = "White"
+			VAR PointColour = "%663466"
+			VAR Defs = "<defs>
+			    <linearGradient id='grad' x1='0' y1='25' x2='0' y2='50' gradientUnits='userSpaceOnUse'>
+			        <stop stop-color='#663466' offset='0' />
+			        <stop stop-color='#663466' offset='0.3' />
+			        <stop stop-color='#663466' offset='1' />
+			    </linearGradient>
+			</defs>"
+			// "Date" field used in this example along the X axis
+			VAR XMinDate = MIN(DimCalender[Start of Month])
+			VAR XMaxDate = MAX(DimCalender[Start of Month])
+			
+			// Obtain overall min and overall max measure values when evaluated for each date
+			VAR YMinValue = MINX(Values(DimCalender[Start of Month]),CALCULATE([Treatment Cost]))
+			VAR YMaxValue = MAXX(Values(DimCalender[Start of Month]),CALCULATE([Treatment Cost]))
+			
+			// Build table of X & Y coordinates and fit to 50 x 150 viewbox
+			VAR SparklineTable = ADDCOLUMNS(
+			    SUMMARIZE('DimCalender',DimCalender[Start of Month]),
+			        "X",INT(150 * DIVIDE(DimCalender[Start of Month] - XMinDate, XMaxDate - XMinDate)),
+			        "Y",INT(50 * DIVIDE([Treatment Cost] - YMinValue,YMaxValue - YMinValue)))
+			
+			// Concatenate X & Y coordinates to build the sparkline
+			VAR Lines = CONCATENATEX(SparklineTable,[X] & "," & 50-[Y]," ", DimCalender[Start of Month])
+			
+			// Last data points on the line
+			VAR LastSparkYValue = MAXX( FILTER(SparklineTable, DimCalender[Start of Month] = XMaxDate), [Y])
+			VAR LastSparkXValue = MAXX( FILTER(SparklineTable, DimCalender[Start of Month] = XMaxDate), [X])
+			
+			// Add to SVG, and verify Data Category is set to Image URL for this measure
+			VAR SVGImageURL = 
+			    "data:image/svg+xml;utf8," & 
+			    --- gradient---
+			    "<svg xmlns='http://www.w3.org/2000/svg' x='0px' y='0px' viewBox='-7 -7 164 64'>" & Defs & 
+			     "<polyline fill='url(#grad)' fill-opacity='0.3' stroke='transparent' 
+			      stroke-width='0' points=' 0 50 " & Lines & 
+			      " 150 150 Z '/>" &
+			    --- Lines---
+			    "<polyline 
+			        fill='transparent' stroke='" & LineColour & "' 
+			        stroke-linecap='round' stroke-linejoin='round' 
+			        stroke-width='2' points=' " & Lines & 
+			      " '/>" &
+			    --- Last Point---
+			        "<circle cx='"& LastSparkXValue & "' cy='" & 50 - LastSparkYValue & "' r='4' stroke='" & LineColour & "' stroke-width='2' fill='" & PointColour & "' />" &
+			        "</svg>"
+			RETURN SVGImageURL
+			```
+		displayFolder: SVG Measures
+		lineageTag: eef16d0e-fb2b-498b-bad9-2bf3cd198c85
+
+	measure 'Avg Age' = AVERAGE(DimPlayer[Age])
+		displayFolder: Average Measures
+		lineageTag: e2fc5dfe-c70f-4187-98cc-fd8cf111c03e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg Mins Played' = AVERAGE(FactInjuries[MinutesPlayedLast30Days])
+		formatString: #,0.00
+		displayFolder: Average Measures
+		lineageTag: 001f4aca-b320-42bf-bd16-83d1452194cf
+
+	measure 'High Risk Players SVG' = ```
+			
+			// Static line color - use %23 instead of # for Firefox compatibility (Measure Derived from Eldersveld Modified by Kolosko)
+			VAR LineColour = "White"
+			VAR PointColour = "%663466"
+			VAR Defs = "<defs>
+			    <linearGradient id='grad' x1='0' y1='25' x2='0' y2='50' gradientUnits='userSpaceOnUse'>
+			        <stop stop-color='#663466' offset='0' />
+			        <stop stop-color='#663466' offset='0.3' />
+			        <stop stop-color='#663466' offset='1' />
+			    </linearGradient>
+			</defs>"
+			// "Date" field used in this example along the X axis
+			VAR XMinDate = MIN(DimCalender[Start of Month])
+			VAR XMaxDate = MAX(DimCalender[Start of Month])
+			
+			// Obtain overall min and overall max measure values when evaluated for each date
+			VAR YMinValue = MINX(Values(DimCalender[Start of Month]),CALCULATE([High Risk Players]))
+			VAR YMaxValue = MAXX(Values(DimCalender[Start of Month]),CALCULATE([High Risk Players]))
+			
+			// Build table of X & Y coordinates and fit to 50 x 150 viewbox
+			VAR SparklineTable = ADDCOLUMNS(
+			    SUMMARIZE('DimCalender',DimCalender[Start of Month]),
+			        "X",INT(150 * DIVIDE(DimCalender[Start of Month] - XMinDate, XMaxDate - XMinDate)),
+			        "Y",INT(50 * DIVIDE([High Risk Players] - YMinValue,YMaxValue - YMinValue)))
+			
+			// Concatenate X & Y coordinates to build the sparkline
+			VAR Lines = CONCATENATEX(SparklineTable,[X] & "," & 50-[Y]," ", DimCalender[Start of Month])
+			
+			// Last data points on the line
+			VAR LastSparkYValue = MAXX( FILTER(SparklineTable, DimCalender[Start of Month] = XMaxDate), [Y])
+			VAR LastSparkXValue = MAXX( FILTER(SparklineTable, DimCalender[Start of Month] = XMaxDate), [X])
+			
+			// Add to SVG, and verify Data Category is set to Image URL for this measure
+			VAR SVGImageURL = 
+			    "data:image/svg+xml;utf8," & 
+			    --- gradient---
+			    "<svg xmlns='http://www.w3.org/2000/svg' x='0px' y='0px' viewBox='-7 -7 164 64'>" & Defs & 
+			     "<polyline fill='url(#grad)' fill-opacity='0.3' stroke='transparent' 
+			      stroke-width='0' points=' 0 50 " & Lines & 
+			      " 150 150 Z '/>" &
+			    --- Lines---
+			    "<polyline 
+			        fill='transparent' stroke='" & LineColour & "' 
+			        stroke-linecap='round' stroke-linejoin='round' 
+			        stroke-width='2' points=' " & Lines & 
+			      " '/>" &
+			    --- Last Point---
+			        "<circle cx='"& LastSparkXValue & "' cy='" & 50 - LastSparkYValue & "' r='4' stroke='" & LineColour & "' stroke-width='2' fill='" & PointColour & "' />" &
+			        "</svg>"
+			RETURN SVGImageURL
+			```
+		displayFolder: SVG Measures
+		lineageTag: f44d99d7-800d-43a5-85cb-2da870b93f50
+
+	measure 'Body Part' = ```
+			
+			VAR InjuriesByPart =
+			    SUMMARIZE (
+			        DimInjuryType,
+			        DimInjuryType[BodyPart],
+			        "InjuryCount", [Total Injuries]
+			    )
+			VAR TopPart =
+			    TOPN (1, InjuriesByPart, [InjuryCount], DESC)
+			RETURN
+			    CONCATENATEX (TopPart, DimInjuryType[BodyPart], ", ")
+			
+			```
+		displayFolder: Text Measures
+		lineageTag: d737dc0a-e7b0-492a-a8c6-1f26fedb0f76
+
+	measure 'Injury Cause' = ```
+			
+			VAR InjuriesByPart =
+			    SUMMARIZE (
+			        DimInjuryType,
+			        DimInjuryType[InjuryCause],
+			        "InjuryCount", [Total Injuries]
+			    )
+			VAR TopPart =
+			    TOPN (1, InjuriesByPart, [InjuryCount], DESC)
+			RETURN
+			    CONCATENATEX (TopPart, DimInjuryType[InjuryCause], ", ")
+			
+			```
+		displayFolder: Text Measures
+		lineageTag: 0eb3fa2d-ae03-47ad-b4ed-f8f107863ff0
+
+	measure Sport = ```
+			
+			VAR InjuriesBySport =
+			    SUMMARIZE (
+			        DimClub,
+			        DimClub[Sport],
+			        "InjuryCount", [Total Injuries]
+			    )
+			VAR TopPart =
+			    TOPN (1, InjuriesBySport, [InjuryCount], DESC)
+			RETURN
+			    CONCATENATEX (TopPart, DimClub[Sport], ", ")
+			
+			```
+		displayFolder: Text Measures
+		lineageTag: da2741e4-bacc-4736-b301-ee304ae402dc
+
+	measure '% Recovered with Limitation' =
+			
+			VAR recwithlimit = CALCULATE([Total Injuries], DimTreatment[Outcome] = "Recovered with Limitation")
+			RETURN DIVIDE(recwithlimit, [Total Injuries],0)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: % of Total
+		lineageTag: a3226711-aa84-4e03-b5a5-57bcc1f31e38
+
+	measure 'Avg Mins Played SVG' = ```
+			
+			// Static line color - use %23 instead of # for Firefox compatibility (Measure Derived from Eldersveld Modified by Kolosko)
+			VAR LineColour = "White"
+			VAR PointColour = "%663466"
+			VAR Defs = "<defs>
+			    <linearGradient id='grad' x1='0' y1='25' x2='0' y2='50' gradientUnits='userSpaceOnUse'>
+			        <stop stop-color='#663466' offset='0' />
+			        <stop stop-color='#663466' offset='0.3' />
+			        <stop stop-color='#663466' offset='1' />
+			    </linearGradient>
+			</defs>"
+			// "Date" field used in this example along the X axis
+			VAR XMinDate = MIN(DimCalender[Start of Month])
+			VAR XMaxDate = MAX(DimCalender[Start of Month])
+			
+			// Obtain overall min and overall max measure values when evaluated for each date
+			VAR YMinValue = MINX(Values(DimCalender[Start of Month]),CALCULATE([Avg Mins Played]))
+			VAR YMaxValue = MAXX(Values(DimCalender[Start of Month]),CALCULATE([Avg Mins Played]))
+			
+			// Build table of X & Y coordinates and fit to 50 x 150 viewbox
+			VAR SparklineTable = ADDCOLUMNS(
+			    SUMMARIZE('DimCalender',DimCalender[Start of Month]),
+			        "X",INT(150 * DIVIDE(DimCalender[Start of Month] - XMinDate, XMaxDate - XMinDate)),
+			        "Y",INT(50 * DIVIDE([Avg Mins Played] - YMinValue,YMaxValue - YMinValue)))
+			
+			// Concatenate X & Y coordinates to build the sparkline
+			VAR Lines = CONCATENATEX(SparklineTable,[X] & "," & 50-[Y]," ", DimCalender[Start of Month])
+			
+			// Last data points on the line
+			VAR LastSparkYValue = MAXX( FILTER(SparklineTable, DimCalender[Start of Month] = XMaxDate), [Y])
+			VAR LastSparkXValue = MAXX( FILTER(SparklineTable, DimCalender[Start of Month] = XMaxDate), [X])
+			
+			// Add to SVG, and verify Data Category is set to Image URL for this measure
+			VAR SVGImageURL = 
+			    "data:image/svg+xml;utf8," & 
+			    --- gradient---
+			    "<svg xmlns='http://www.w3.org/2000/svg' x='0px' y='0px' viewBox='-7 -7 164 64'>" & Defs & 
+			     "<polyline fill='url(#grad)' fill-opacity='0.3' stroke='transparent' 
+			      stroke-width='0' points=' 0 50 " & Lines & 
+			      " 150 150 Z '/>" &
+			    --- Lines---
+			    "<polyline 
+			        fill='transparent' stroke='" & LineColour & "' 
+			        stroke-linecap='round' stroke-linejoin='round' 
+			        stroke-width='2' points=' " & Lines & 
+			      " '/>" &
+			    --- Last Point---
+			        "<circle cx='"& LastSparkXValue & "' cy='" & 50 - LastSparkYValue & "' r='4' stroke='" & LineColour & "' stroke-width='2' fill='" & PointColour & "' />" &
+			        "</svg>"
+			RETURN SVGImageURL
+			```
+		displayFolder: SVG Measures
+		lineageTag: 6ab15a66-2755-4a06-bd3c-3e73303b2637
+
+	measure 'No of Fully Recovered SVG' = ```
+			
+			// Static line color - use %23 instead of # for Firefox compatibility (Measure Derived from Eldersveld Modified by Kolosko)
+			VAR LineColour = "White"
+			VAR PointColour = "%663466"
+			VAR Defs = "<defs>
+			    <linearGradient id='grad' x1='0' y1='25' x2='0' y2='50' gradientUnits='userSpaceOnUse'>
+			        <stop stop-color='#663466' offset='0' />
+			        <stop stop-color='#663466' offset='0.3' />
+			        <stop stop-color='#663466' offset='1' />
+			    </linearGradient>
+			</defs>"
+			// "Date" field used in this example along the X axis
+			VAR XMinDate = MIN(DimCalender[Start of Month])
+			VAR XMaxDate = MAX(DimCalender[Start of Month])
+			
+			// Obtain overall min and overall max measure values when evaluated for each date
+			VAR YMinValue = MINX(Values(DimCalender[Start of Month]),CALCULATE([Fully Recovered]))
+			VAR YMaxValue = MAXX(Values(DimCalender[Start of Month]),CALCULATE([Fully Recovered]))
+			
+			// Build table of X & Y coordinates and fit to 50 x 150 viewbox
+			VAR SparklineTable = ADDCOLUMNS(
+			    SUMMARIZE('DimCalender',DimCalender[Start of Month]),
+			        "X",INT(150 * DIVIDE(DimCalender[Start of Month] - XMinDate, XMaxDate - XMinDate)),
+			        "Y",INT(50 * DIVIDE([Fully Recovered] - YMinValue,YMaxValue - YMinValue)))
+			
+			// Concatenate X & Y coordinates to build the sparkline
+			VAR Lines = CONCATENATEX(SparklineTable,[X] & "," & 50-[Y]," ", DimCalender[Start of Month])
+			
+			// Last data points on the line
+			VAR LastSparkYValue = MAXX( FILTER(SparklineTable, DimCalender[Start of Month] = XMaxDate), [Y])
+			VAR LastSparkXValue = MAXX( FILTER(SparklineTable, DimCalender[Start of Month] = XMaxDate), [X])
+			
+			// Add to SVG, and verify Data Category is set to Image URL for this measure
+			VAR SVGImageURL = 
+			    "data:image/svg+xml;utf8," & 
+			    --- gradient---
+			    "<svg xmlns='http://www.w3.org/2000/svg' x='0px' y='0px' viewBox='-7 -7 164 64'>" & Defs & 
+			     "<polyline fill='url(#grad)' fill-opacity='0.3' stroke='transparent' 
+			      stroke-width='0' points=' 0 50 " & Lines & 
+			      " 150 150 Z '/>" &
+			    --- Lines---
+			    "<polyline 
+			        fill='transparent' stroke='" & LineColour & "' 
+			        stroke-linecap='round' stroke-linejoin='round' 
+			        stroke-width='2' points=' " & Lines & 
+			      " '/>" &
+			    --- Last Point---
+			        "<circle cx='"& LastSparkXValue & "' cy='" & 50 - LastSparkYValue & "' r='4' stroke='" & LineColour & "' stroke-width='2' fill='" & PointColour & "' />" &
+			        "</svg>"
+			RETURN SVGImageURL
+			```
+		displayFolder: SVG Measures
+		lineageTag: 4290d75f-601f-4a87-bb21-32dce78a7291
+
+	measure '% reoccuring svg' = ```
+			
+			// Derived from Martens
+			    // Values
+				VAR Percentage =  [% Reoccuring] // value has to be >= 0 and <=1
+				VAR Colour = "White" 
+				VAR CirclePercent = 180 - (IF(Percentage > .9999, .9999, Percentage) * 360)
+				VAR ShortDistance = if(CirclePercent < 0, 1,0)
+				VAR Radians = RADIANS(CirclePercent)
+				VAR XArcEnd = sin(Radians)*.8
+				VAR YArcEnd = cos(Radians)*.8
+			    // svg string 
+				VAR svgHeader = 
+			    "data:image/svg+xml;utf8,<svg width='30' height='30' xmlns:svg='http://www.w3.org/2000/svg' xmlns='http://www.w3.org/2000/svg' viewBox='-1 -1 2 2'>" 
+				VAR BackgroundArc ="<path d='M 0 -.8 A 0.8 0.8 0 1 1 "&sin(RADIANS(-179.99))*.8&" "& cos(RADIANS(-179.99))*.8&"  L 0 0 z' fill='#663466'></path>" 
+				VAR Arc ="<path d='M 0 -.8 A 0.8 0.8 0 " & ShortDistance & " 1 " & XArcEnd & " " & YArcEnd & "  L 0 0 z' fill='" & Colour & "'></path>"
+				VAR svgFooter = "</svg>"
+			    return svgHeader & BackgroundArc & Arc & svgFooter
+			```
+		displayFolder: SVG Measures
+		lineageTag: a103646a-a168-41de-83fb-91a4302bc02c
+
+	measure '% Severity svg' = ```
+			
+			// Derived from Martens
+			    // Values
+				VAR Percentage =  [% Severe Injuries] // value has to be >= 0 and <=1
+				VAR Colour = "White" 
+				VAR CirclePercent = 180 - (IF(Percentage > .9999, .9999, Percentage) * 360)
+				VAR ShortDistance = if(CirclePercent < 0, 1,0)
+				VAR Radians = RADIANS(CirclePercent)
+				VAR XArcEnd = sin(Radians)*.8
+				VAR YArcEnd = cos(Radians)*.8
+			    // svg string 
+				VAR svgHeader = 
+			    "data:image/svg+xml;utf8,<svg width='30' height='30' xmlns:svg='http://www.w3.org/2000/svg' xmlns='http://www.w3.org/2000/svg' viewBox='-1 -1 2 2'>" 
+				VAR BackgroundArc ="<path d='M 0 -.8 A 0.8 0.8 0 1 1 "&sin(RADIANS(-179.99))*.8&" "& cos(RADIANS(-179.99))*.8&"  L 0 0 z' fill='#663466'></path>" 
+				VAR Arc ="<path d='M 0 -.8 A 0.8 0.8 0 " & ShortDistance & " 1 " & XArcEnd & " " & YArcEnd & "  L 0 0 z' fill='" & Colour & "'></path>"
+				VAR svgFooter = "</svg>"
+			    return svgHeader & BackgroundArc & Arc & svgFooter
+			```
+		displayFolder: SVG Measures
+		lineageTag: 1fffc0de-4c08-4306-b65f-b6c11ddf8346
+
+	measure '% recovered svg' = ```
+			
+			// Derived from Martens
+			    // Values
+				VAR Percentage =  [% fully recovered] // value has to be >= 0 and <=1
+				VAR Colour = "White" 
+				VAR CirclePercent = 180 - (IF(Percentage > .9999, .9999, Percentage) * 360)
+				VAR ShortDistance = if(CirclePercent < 0, 1,0)
+				VAR Radians = RADIANS(CirclePercent)
+				VAR XArcEnd = sin(Radians)*.8
+				VAR YArcEnd = cos(Radians)*.8
+			    // svg string 
+				VAR svgHeader = 
+			    "data:image/svg+xml;utf8,<svg width='30' height='30' xmlns:svg='http://www.w3.org/2000/svg' xmlns='http://www.w3.org/2000/svg' viewBox='-1 -1 2 2'>" 
+				VAR BackgroundArc ="<path d='M 0 -.8 A 0.8 0.8 0 1 1 "&sin(RADIANS(-179.99))*.8&" "& cos(RADIANS(-179.99))*.8&"  L 0 0 z' fill='#663466'></path>" 
+				VAR Arc ="<path d='M 0 -.8 A 0.8 0.8 0 " & ShortDistance & " 1 " & XArcEnd & " " & YArcEnd & "  L 0 0 z' fill='" & Colour & "'></path>"
+				VAR svgFooter = "</svg>"
+			    return svgHeader & BackgroundArc & Arc & svgFooter
+			```
+		displayFolder: SVG Measures
+		lineageTag: c674f69a-be54-4b49-8dca-5ca22200608c
+
+	measure 'Median Recovery Days SVG' = ```
+			
+			// Static line color - use %23 instead of # for Firefox compatibility (Measure Derived from Eldersveld Modified by Kolosko)
+			VAR LineColour = "White"
+			VAR PointColour = "%663466"
+			VAR Defs = "<defs>
+			    <linearGradient id='grad' x1='0' y1='25' x2='0' y2='50' gradientUnits='userSpaceOnUse'>
+			        <stop stop-color='#663466' offset='0' />
+			        <stop stop-color='#663466' offset='0.3' />
+			        <stop stop-color='#663466' offset='1' />
+			    </linearGradient>
+			</defs>"
+			// "Date" field used in this example along the X axis
+			VAR XMinDate = MIN(DimCalender[Start of Month])
+			VAR XMaxDate = MAX(DimCalender[Start of Month])
+			
+			// Obtain overall min and overall max measure values when evaluated for each date
+			VAR YMinValue = MINX(Values(DimCalender[Start of Month]),CALCULATE([Median Days to Recovery]))
+			VAR YMaxValue = MAXX(Values(DimCalender[Start of Month]),CALCULATE([Median Days to Recovery]))
+			
+			// Build table of X & Y coordinates and fit to 50 x 150 viewbox
+			VAR SparklineTable = ADDCOLUMNS(
+			    SUMMARIZE('DimCalender',DimCalender[Start of Month]),
+			        "X",INT(150 * DIVIDE(DimCalender[Start of Month] - XMinDate, XMaxDate - XMinDate)),
+			        "Y",INT(50 * DIVIDE([Median Days to Recovery] - YMinValue,YMaxValue - YMinValue)))
+			
+			// Concatenate X & Y coordinates to build the sparkline
+			VAR Lines = CONCATENATEX(SparklineTable,[X] & "," & 50-[Y]," ", DimCalender[Start of Month])
+			
+			// Last data points on the line
+			VAR LastSparkYValue = MAXX( FILTER(SparklineTable, DimCalender[Start of Month] = XMaxDate), [Y])
+			VAR LastSparkXValue = MAXX( FILTER(SparklineTable, DimCalender[Start of Month] = XMaxDate), [X])
+			
+			// Add to SVG, and verify Data Category is set to Image URL for this measure
+			VAR SVGImageURL = 
+			    "data:image/svg+xml;utf8," & 
+			    --- gradient---
+			    "<svg xmlns='http://www.w3.org/2000/svg' x='0px' y='0px' viewBox='-7 -7 164 64'>" & Defs & 
+			     "<polyline fill='url(#grad)' fill-opacity='0.3' stroke='transparent' 
+			      stroke-width='0' points=' 0 50 " & Lines & 
+			      " 150 150 Z '/>" &
+			    --- Lines---
+			    "<polyline 
+			        fill='transparent' stroke='" & LineColour & "' 
+			        stroke-linecap='round' stroke-linejoin='round' 
+			        stroke-width='2' points=' " & Lines & 
+			      " '/>" &
+			    --- Last Point---
+			        "<circle cx='"& LastSparkXValue & "' cy='" & 50 - LastSparkYValue & "' r='4' stroke='" & LineColour & "' stroke-width='2' fill='" & PointColour & "' />" &
+			        "</svg>"
+			RETURN SVGImageURL
+			```
+		displayFolder: SVG Measures
+		lineageTag: 62c124ac-b97a-4b49-9d2f-66b34cbdb24c
+
+	measure Subtitle =
+			
+			VAR sport = SELECTEDVALUE(DimClub[Sport])
+			RETURN "Showing the Treatment Cost, Most Effective treatment, Injuries breakdown per Region and Competition Level for " & sport
+		displayFolder: Text Measures
+		lineageTag: 690f74bd-ceb5-4153-9bc6-3ccf34cd3d17
+
+	partition 'DAX & Measures' = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"Column1"})
+				in
+				    #"Removed Columns"
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "Athlete Health & Injury Report"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "8b4a6a99-cede-4880-972b-1346627bce37"
+  }
+}

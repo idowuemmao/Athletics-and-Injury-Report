@@ -1,0 +1,1584 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/bookmark/2.1.0/schema.json",
+  "displayName": "Performance info",
+  "name": "da70a9b0e281cc4a4324",
+  "options": {
+    "targetVisualNames": []
+  },
+  "explorationState": {
+    "version": "1.11",
+    "activeSection": "3adb7dbd437402424479",
+    "sections": {
+      "3adb7dbd437402424479": {
+        "visualContainers": {
+          "5c2dda5d7d5a31036746": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "656401f9dd84e90d3bdb",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DAX & Measures"
+                        }
+                      },
+                      "Property": "Total Injuries"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "b1f52dd5c56f7573ea60",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DAX & Measures"
+                        }
+                      },
+                      "Property": "Avg Mins Played"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "b6f34c81bb1a331e21d0",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DAX & Measures"
+                        }
+                      },
+                      "Property": "Avg Recovery(Days)"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "7781ba90861715a9da49",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DAX & Measures"
+                        }
+                      },
+                      "Property": "Cost per Injury"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "4d8730808325f58ac677",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DAX & Measures"
+                        }
+                      },
+                      "Property": "High Risk Players"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "cardVisual",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DAX & Measures"
+                        }
+                      },
+                      "Property": "Total Injuries"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "dec38d043be5b511b00e": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "39c9f17b1bf9f8fde780",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DAX & Measures"
+                        }
+                      },
+                      "Property": "Total Injuries"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "3d5a0d7a6048f4290cc1",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DimPlayer"
+                        }
+                      },
+                      "Property": "Gender"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "hundredPercentStackedBarChart",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DAX & Measures"
+                        }
+                      },
+                      "Property": "Total Injuries"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "6b71e53102c0000a02e0": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "557a436c4e8e5a293147",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DimPlayer"
+                        }
+                      },
+                      "Property": "Gender"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "caa2950e1b75e30486b0",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DAX & Measures"
+                        }
+                      },
+                      "Property": "Avg Recovery(Days)"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "hundredPercentStackedBarChart",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DAX & Measures"
+                        }
+                      },
+                      "Property": "Avg Recovery(Days)"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "ac83e6e3b15933e5c46d": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "e2fd811779744057d434",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DimPlayer"
+                        }
+                      },
+                      "Property": "Gender"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "cb902cb8e5cb4453d4ba",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DAX & Measures"
+                        }
+                      },
+                      "Property": "Avg Mins Played"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "hundredPercentStackedBarChart",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DAX & Measures"
+                        }
+                      },
+                      "Property": "Avg Mins Played"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "a92b7796249200e95c05": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "d4583391066653b9fe83",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DimPlayer"
+                        }
+                      },
+                      "Property": "Gender"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "43ae53ad181d58df6046",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DAX & Measures"
+                        }
+                      },
+                      "Property": "Avg Mins Played"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "hundredPercentStackedBarChart",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DAX & Measures"
+                        }
+                      },
+                      "Property": "Avg Mins Played"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "8ea0020558000d1c3751": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "e8fa9d365b72611ddd01",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DimPlayer"
+                        }
+                      },
+                      "Property": "Gender"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "f7085eb38aca874b4fa6",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DAX & Measures"
+                        }
+                      },
+                      "Property": "High Risk Players"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "hundredPercentStackedBarChart",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DAX & Measures"
+                        }
+                      },
+                      "Property": "High Risk Players"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "173d3a88e8ee0ed1367d": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "24d4d5a2a089f09aea75",
+                  "type": "Advanced",
+                  "expression": {
+                    "Aggregation": {
+                      "Expression": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "DimCalender"
+                            }
+                          },
+                          "Property": "Date"
+                        }
+                      },
+                      "Function": 3
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "f5095f2635a6f42e4732",
+                  "type": "Advanced",
+                  "expression": {
+                    "HierarchyLevel": {
+                      "Expression": {
+                        "Hierarchy": {
+                          "Expression": {
+                            "PropertyVariationSource": {
+                              "Expression": {
+                                "SourceRef": {
+                                  "Entity": "DimCalender"
+                                }
+                              },
+                              "Name": "Variation",
+                              "Property": "Date"
+                            }
+                          },
+                          "Hierarchy": "Date Hierarchy"
+                        }
+                      },
+                      "Level": "Year"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "a99b856e6d999f491954",
+                  "type": "Categorical",
+                  "expression": {
+                    "HierarchyLevel": {
+                      "Expression": {
+                        "Hierarchy": {
+                          "Expression": {
+                            "PropertyVariationSource": {
+                              "Expression": {
+                                "SourceRef": {
+                                  "Entity": "DimCalender"
+                                }
+                              },
+                              "Name": "Variation",
+                              "Property": "Date"
+                            }
+                          },
+                          "Hierarchy": "Date Hierarchy"
+                        }
+                      },
+                      "Level": "Quarter"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "fb569d5c4e5cb21a3a9c",
+                  "type": "Categorical",
+                  "expression": {
+                    "HierarchyLevel": {
+                      "Expression": {
+                        "Hierarchy": {
+                          "Expression": {
+                            "PropertyVariationSource": {
+                              "Expression": {
+                                "SourceRef": {
+                                  "Entity": "DimCalender"
+                                }
+                              },
+                              "Name": "Variation",
+                              "Property": "Date"
+                            }
+                          },
+                          "Hierarchy": "Date Hierarchy"
+                        }
+                      },
+                      "Level": "Month"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "cf24dab767f6b4273c2a",
+                  "type": "Advanced",
+                  "expression": {
+                    "HierarchyLevel": {
+                      "Expression": {
+                        "Hierarchy": {
+                          "Expression": {
+                            "PropertyVariationSource": {
+                              "Expression": {
+                                "SourceRef": {
+                                  "Entity": "DimCalender"
+                                }
+                              },
+                              "Name": "Variation",
+                              "Property": "Date"
+                            }
+                          },
+                          "Hierarchy": "Date Hierarchy"
+                        }
+                      },
+                      "Level": "Day"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "a15457204ea9337504a6",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DimInjuryType"
+                        }
+                      },
+                      "Property": "Severity"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "e401981420f659c9de5d",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DAX & Measures"
+                        }
+                      },
+                      "Property": "Total Injuries"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "ZoomChartsDrillDownTimelinePro7F6C01BA1C534E9AB4A6BCCB44F591D6",
+              "objects": {}
+            }
+          },
+          "bc27a6e3d6e705aba8b9": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "86b4fd0ef0dce9aac2ea",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DimInjuryType"
+                        }
+                      },
+                      "Property": "InjuryCause"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "82dc72657aee21fb4e74",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DimClub"
+                        }
+                      },
+                      "Property": "SurfaceType"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "123769c9d2c6a34c6261",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DAX & Measures"
+                        }
+                      },
+                      "Property": "Avg Recovery(Days)"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "0d9b8acaa711d9982736",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DimInjuryType"
+                        }
+                      },
+                      "Property": "InjuryType"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "bf8e5d4c44bbfac72cf2",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DAX & Measures"
+                        }
+                      },
+                      "Property": "Avg Mins Played"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "ZoomChartsScatterChartPaidA2C55E4B59078FDD51C4CD1C4D4E6623V9N8",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DAX & Measures"
+                        }
+                      },
+                      "Property": "Avg Recovery(Days)"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "07ad1c929e08aa315762": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "ddf600c3e72861298245",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DimClub"
+                        }
+                      },
+                      "Property": "Sport"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "ed70ab00145ed256a6f2",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DimInjuryType"
+                        }
+                      },
+                      "Property": "InjuryType"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "bf0e23479fb8f6215a56",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DimInjuryType"
+                        }
+                      },
+                      "Property": "BodyPart"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "61db6771bfc4de4921c4",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DimTreatment"
+                        }
+                      },
+                      "Property": "TreatmentMethod"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "80c996dfa7fa90c1c90b",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DimTreatment"
+                        }
+                      },
+                      "Property": "Outcome"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "9a93e00f43acf1a71b98",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "FactInjuries"
+                        }
+                      },
+                      "Property": "Player Risk"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "431fe1523b9d60b86b61",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DAX & Measures"
+                        }
+                      },
+                      "Property": "Total Injuries"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "ZoomChartsFacetChartPaidE77E4ED357DC402ABA005987437CF500",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DAX & Measures"
+                        }
+                      },
+                      "Property": "Total Injuries"
+                    }
+                  }
+                }
+              ],
+              "projections": {
+                "Values1": [
+                  {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DAX & Measures"
+                        }
+                      },
+                      "Property": "Total Injuries"
+                    }
+                  }
+                ],
+                "Category": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DimClub"
+                        }
+                      },
+                      "Property": "Sport"
+                    }
+                  },
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DimInjuryType"
+                        }
+                      },
+                      "Property": "InjuryType"
+                    }
+                  },
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DimInjuryType"
+                        }
+                      },
+                      "Property": "BodyPart"
+                    }
+                  },
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DimTreatment"
+                        }
+                      },
+                      "Property": "TreatmentMethod"
+                    }
+                  },
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DimTreatment"
+                        }
+                      },
+                      "Property": "Outcome"
+                    }
+                  }
+                ],
+                "Legend": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "FactInjuries"
+                        }
+                      },
+                      "Property": "Player Risk"
+                    }
+                  }
+                ]
+              },
+              "parameters": {
+                "Values1": [
+                  {
+                    "expr": {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Entity": "Parameter"
+                          }
+                        },
+                        "Property": "Parameter"
+                      }
+                    },
+                    "index": 0,
+                    "length": 1
+                  }
+                ]
+              }
+            }
+          },
+          "7bb92c8ce1040700a977": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "45df408bf7536edb4d3c",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Parameter"
+                        }
+                      },
+                      "Property": "Parameter"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "general": [
+                    {
+                      "properties": {
+                        "filter": {
+                          "filter": {
+                            "Version": 2,
+                            "From": [
+                              {
+                                "Name": "p",
+                                "Entity": "Parameter",
+                                "Type": 0
+                              }
+                            ],
+                            "Where": [
+                              {
+                                "Condition": {
+                                  "In": {
+                                    "Expressions": [
+                                      {
+                                        "Column": {
+                                          "Expression": {
+                                            "SourceRef": {
+                                              "Source": "p"
+                                            }
+                                          },
+                                          "Property": "Parameter Fields"
+                                        }
+                                      }
+                                    ],
+                                    "Values": [
+                                      [
+                                        {
+                                          "Literal": {
+                                            "Value": "'''DAX & Measures''[Total Injuries]'"
+                                          }
+                                        }
+                                      ]
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Dropdown'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "selection": [
+                    {
+                      "properties": {
+                        "strictSingleSelect": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "true"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Parameter"
+                        }
+                      },
+                      "Property": "Parameter"
+                    }
+                  }
+                ]
+              },
+              "cachedFilterDisplayItems": [
+                {
+                  "id": {
+                    "scopeId": {
+                      "Comparison": {
+                        "ComparisonKind": 0,
+                        "Left": {
+                          "Column": {
+                            "Expression": {
+                              "SourceRef": {
+                                "Entity": "Parameter"
+                              }
+                            },
+                            "Property": "Parameter Fields"
+                          }
+                        },
+                        "Right": {
+                          "Literal": {
+                            "Value": "'''DAX & Measures''[Total Injuries]'"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "displayName": "Total Injuries"
+                }
+              ]
+            }
+          },
+          "5008cfe151e50a087eaa": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {}
+            }
+          },
+          "0908915d11dc729e2395": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          },
+          "745d6d70ea7147bdda0b": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "08d3ba3ded0098f5f5ca",
+                  "type": "Advanced",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DimLocation"
+                        }
+                      },
+                      "Property": "Latitude"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "7e2b5b464553c6f8efbd",
+                  "type": "Advanced",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DimLocation"
+                        }
+                      },
+                      "Property": "Longitude"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "6be7c208f28b265acc7e",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DimLocation"
+                        }
+                      },
+                      "Property": "Country"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "fbda8d1e295d620537cc",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DAX & Measures"
+                        }
+                      },
+                      "Property": "Total Injuries"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "ZoomChartsDrillDownMapPro6AFEEB10499543F282BD06EF315D5EAA",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DAX & Measures"
+                        }
+                      },
+                      "Property": "Total Injuries"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "4ba34bd0239c032559e3": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "675bb4dadb3217e48857",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DimPlayer"
+                        }
+                      },
+                      "Property": "Age Group"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "42b9dc5ddf10df8d7dfc",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DimInjuryType"
+                        }
+                      },
+                      "Property": "IsRecurrentInjury"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "105d96ac4844d0929a7b",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DAX & Measures"
+                        }
+                      },
+                      "Property": "Avg Recovery(Days)"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "1283dc98e5ba1a2429ba",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DimInjuryType"
+                        }
+                      },
+                      "Property": "InjuryCause"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "ZoomChartsDrillDownComboBarProE77E4ED357DC402ABA005987437CF800",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DAX & Measures"
+                        }
+                      },
+                      "Property": "Avg Recovery(Days)"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "722a388b490033043ad9": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          },
+          "9b90101620d63e850e4e": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          },
+          "85dbfbee5929103708c6": {
+            "singleVisual": {
+              "visualType": "pageNavigator",
+              "objects": {}
+            }
+          },
+          "4c5890a4dd0820a27b1c": {
+            "singleVisual": {
+              "visualType": "image",
+              "objects": {}
+            }
+          },
+          "8130e7847e9042505e1c": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          },
+          "a503e10b5e40d1042ed8": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          },
+          "ecbd77ab66bd5e6a2660": {
+            "singleVisual": {
+              "visualType": "image",
+              "objects": {}
+            }
+          },
+          "fdf0d802342d15641d40": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "c1d851ca9fcf46d66e0c",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "FactInjuries"
+                        }
+                      },
+                      "Property": "Season"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Dropdown'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "FactInjuries"
+                        }
+                      },
+                      "Property": "Season"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "4f88f1b708c0a68466e8": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "9a751ea41416f53cd70e",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DimClub"
+                        }
+                      },
+                      "Property": "SurfaceType"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Dropdown'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DimClub"
+                        }
+                      },
+                      "Property": "SurfaceType"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "bb51d09715a4a8ac2929": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "b13ce14839e0b49a80ee",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DimTreatment"
+                        }
+                      },
+                      "Property": "Outcome"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Dropdown'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DimTreatment"
+                        }
+                      },
+                      "Property": "Outcome"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "08a2980e5543dc5ee92e": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "c30f78ebf5bda3406c7c",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DimClub"
+                        }
+                      },
+                      "Property": "CompetitionLevel"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Dropdown'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DimClub"
+                        }
+                      },
+                      "Property": "CompetitionLevel"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "f178900edd305663a467": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {}
+            }
+          },
+          "8575df9751e224a1461d": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {}
+            }
+          },
+          "c28ca9223b0a1d9b394a": {
+            "singleVisual": {
+              "visualType": "image",
+              "objects": {}
+            }
+          },
+          "10319dadd42e0c18577e": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {}
+            }
+          },
+          "e63f3270e4b12dc60202": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {}
+            }
+          },
+          "51d931c9d0b7763a193b": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {}
+            }
+          },
+          "f0ebbd3da9a34cc7140d": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {}
+            }
+          },
+          "717b93ba6ed5067cae30": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {}
+            }
+          },
+          "06a47a009333516262ba": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {}
+            }
+          },
+          "dd338be4bc71c2080854": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {}
+            }
+          },
+          "e5c8d6636312e4565136": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {}
+            }
+          },
+          "7975eaa066cea27d2611": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {}
+            }
+          },
+          "dd6829303227a0868818": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {}
+            }
+          },
+          "15e8102788133e43a494": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {}
+            }
+          },
+          "396706b644336c30c70b": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {}
+            }
+          }
+        },
+        "visualContainerGroups": {
+          "502ca73e2238dad87c80": {
+            "isHidden": true
+          },
+          "9789f2892abea5adec0c": {
+            "isHidden": false
+          }
+        }
+      }
+    },
+    "objects": {
+      "merge": {
+        "outspacePane": [
+          {
+            "properties": {
+              "expanded": {
+                "expr": {
+                  "Literal": {
+                    "Value": "false"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

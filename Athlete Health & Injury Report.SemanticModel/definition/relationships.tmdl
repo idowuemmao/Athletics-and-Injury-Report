@@ -1,0 +1,61 @@
+relationship AutoDetected_7fa3d4b5-de5b-4fb0-ac57-d5c0ceb141e0
+	fromColumn: FactInjuries.ClubDimKey
+	toColumn: DimClub.ClubDimKey
+
+relationship AutoDetected_93d84d42-c360-4e38-a043-13620b3ba3f3
+	fromColumn: FactInjuries.InjuryTypeDimKey
+	toColumn: DimInjuryType.InjuryTypeDimKey
+
+relationship AutoDetected_3c29cd39-c87c-40f2-8334-8626694716e1
+	crossFilteringBehavior: bothDirections
+	fromColumn: FactInjuries.CoachDimKey
+	toColumn: DimCoach.CoachDimKey
+
+relationship AutoDetected_80785ddf-3779-4a1a-ae01-3d4ac71c7f07
+	crossFilteringBehavior: bothDirections
+	fromColumn: FactInjuries.PlayerDimKey
+	toColumn: DimPlayer.PlayerDimKey
+
+relationship AutoDetected_1c82eec5-a7d7-4c4b-b27b-3189f14228cc
+	fromColumn: FactInjuries.TreatmentDimKey
+	toColumn: DimTreatment.TreatmentDimKey
+
+relationship AutoDetected_5d7470dc-7044-4a1b-97b5-d44bf2a1c589
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: FactInjuries.LocationDimKey
+	toColumn: DimLocation.LocationDimKey
+
+relationship AutoDetected_15da42c8-e871-4bf0-b83c-3c5b65f7fe25
+	fromColumn: FactInjuries.EventDimKey
+	toColumn: DimEvent.EventDimKey
+
+relationship a109eaeb-0c5e-4a17-bd96-3affd380be50
+	joinOnDateBehavior: datePartOnly
+	fromColumn: DimCalender.Date
+	toColumn: LocalDateTable_23b77527-940f-408d-9562-adb0c1e33c87.Date
+
+relationship 82068078-8093-46ab-8091-282a15a2851d
+	joinOnDateBehavior: datePartOnly
+	fromColumn: DimCalender.Weekending
+	toColumn: LocalDateTable_b297a4b9-71eb-4e55-8ebf-94d1e21a6a4b.Date
+
+relationship 76ce1675-b3e0-4745-96bc-2447679b44f4
+	joinOnDateBehavior: datePartOnly
+	fromColumn: DimCalender.'Start of Month'
+	toColumn: LocalDateTable_829c1bd1-3cdd-49a0-86ed-6a02b1cb2c6e.Date
+
+relationship eb7b4643-4362-4f53-884d-89ab7619129f
+	joinOnDateBehavior: datePartOnly
+	fromColumn: DimCalender.'Start of Year'
+	toColumn: LocalDateTable_c28454f5-93b1-4ea5-ad84-27d4b8f81757.Date
+
+relationship 99ab72ac-1e6f-da7b-f73b-355715145fd9
+	fromColumn: FactInjuries.InjuryDate
+	toColumn: DimCalender.Date
+
+relationship 0c04328c-b009-a4fc-2462-1c1fe1c2e2da
+	isActive: false
+	fromColumn: FactInjuries.ReturnDate
+	toColumn: DimCalender.Date
+

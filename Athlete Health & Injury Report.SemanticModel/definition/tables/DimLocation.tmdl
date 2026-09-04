@@ -1,0 +1,67 @@
+table DimLocation
+	lineageTag: 1bb2b69c-edb5-42ec-9bc4-9053f76c5630
+
+	column LocationDimKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 0ff8e7a8-d592-4e7b-8a62-3b1a9a9dbbd1
+		summarizeBy: none
+		sourceColumn: LocationDimKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Country
+		dataType: string
+		lineageTag: 6276f6eb-75d6-4805-97d8-67f7e2bdefd8
+		summarizeBy: none
+		sourceColumn: Country
+
+		annotation SummarizationSetBy = Automatic
+
+	column Latitude
+		dataType: double
+		lineageTag: a252c1a2-d493-4445-b3ff-634383dca9fe
+		summarizeBy: sum
+		sourceColumn: Latitude
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Longitude
+		dataType: double
+		lineageTag: 59500738-43e5-4208-92d3-f5adbcb0c140
+		summarizeBy: sum
+		sourceColumn: Longitude
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Region
+		dataType: string
+		lineageTag: 3a78094c-ecd3-4994-813d-a5669dafe00f
+		summarizeBy: none
+		sourceColumn: Region
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimLocation = m
+		mode: import
+		queryGroup: 'Dim Tables'
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents(#"Folder Source" & #"File Source"), null, true),
+				    DimLocation_Sheet = Source{[Item="DimLocation",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(DimLocation_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"LocationDimKey", Int64.Type}, {"Country", type text}, {"Latitude", type number}, {"Longitude", type number}, {"Region", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

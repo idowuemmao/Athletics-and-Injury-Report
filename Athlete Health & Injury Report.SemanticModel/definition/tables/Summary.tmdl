@@ -1,0 +1,79 @@
+table Summary
+	isHidden
+	lineageTag: e7d46c57-2244-431d-9329-bb6adf1f282c
+
+	column 'Table Name'
+		dataType: string
+		isHidden
+		lineageTag: c90b27ce-0bde-42bc-b47e-81373324b33d
+		summarizeBy: none
+		sourceColumn: Table Name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Table Type'
+		dataType: string
+		isHidden
+		lineageTag: fdc0b2d9-65dc-4c22-8b29-24138ea146ac
+		summarizeBy: none
+		sourceColumn: Table Type
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Record Count'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 43ba3e51-c9f7-4046-8c47-703676ee1270
+		summarizeBy: sum
+		sourceColumn: Record Count
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Column Count'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: e23664f6-6a90-4a6e-869e-eb45e184a790
+		summarizeBy: sum
+		sourceColumn: Column Count
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Description
+		dataType: string
+		isHidden
+		lineageTag: 1013f135-55aa-4cea-aff9-8e637bd1d6eb
+		summarizeBy: none
+		sourceColumn: Description
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Summary = m
+		mode: import
+		queryGroup: Dictionary
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\idgre\Videos\Programming\FP20 Analytics\Challenge_29_Athlete Health & Injury Dataset (Star Schema)\Challenge_29_Athlete Health & Injury Dataset (Star Schema).xlsx"), null, true),
+				    Summary_Sheet = Source{[Item="Summary",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Summary_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Table Name", type text}, {"Table Type", type text}, {"Record Count", Int64.Type}, {"Column Count", Int64.Type}, {"Description", type text}})
+				in
+				    #"Changed Type"
+
+	changedProperty = IsHidden
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

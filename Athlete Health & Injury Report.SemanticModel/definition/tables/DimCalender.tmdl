@@ -1,0 +1,189 @@
+table DimCalender
+	lineageTag: 7cba2a97-bd5d-43aa-828b-c69d4d3723f9
+
+	column Date
+		formatString: General Date
+		lineageTag: 821de455-ab19-4080-86bc-52fa9878b0aa
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+		variation Variation
+			isDefault
+			relationship: a109eaeb-0c5e-4a17-bd96-3affd380be50
+			defaultHierarchy: LocalDateTable_23b77527-940f-408d-9562-adb0c1e33c87.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		formatString: 0
+		lineageTag: 32effb8e-e91b-4897-b228-6c13b71f68b5
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Year]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter
+		formatString: 0
+		lineageTag: 421bafba-f9b4-463f-a56f-687c81caf316
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Quarter]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month No'
+		formatString: 0
+		lineageTag: 12f73340-5ab8-4e7c-b1d7-892798224195
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Month No]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Week Num'
+		formatString: 0
+		lineageTag: a5bfeefa-d7ff-4405-8a4c-1e72edce9568
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Week Num]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Day
+		formatString: 0
+		lineageTag: 5102c21a-6d29-4c54-9994-1ffb72599d7e
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Day]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Name'
+		lineageTag: a6448866-5007-43ab-ac30-1cfc4621d8cd
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Month Name]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Short'
+		lineageTag: 90233081-02e2-4dce-9c27-059074bff8cf
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Month Short]
+
+		annotation SummarizationSetBy = Automatic
+
+	column DayName
+		lineageTag: 714ec12d-2210-49d0-922b-c5c97228ae3c
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [DayName]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Qtr Number'
+		lineageTag: b46fb4be-8ca4-4d9b-9883-325bebea3f3e
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Qtr Number]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Year Month'
+		lineageTag: 4df4d839-d06c-4eec-a7c1-c40e5a326634
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Year Month]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Year Quarter'
+		lineageTag: 2268ced1-a492-4e2d-8056-ada45fb1b423
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Year Quarter]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Day Type'
+		lineageTag: 2fa715b5-3b08-4f56-adc0-311819430ca7
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Day Type]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Weekending
+		formatString: General Date
+		lineageTag: bb809e02-a5c1-4c5a-870b-6891bee9b27f
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Weekending]
+
+		variation Variation
+			isDefault
+			relationship: 82068078-8093-46ab-8091-282a15a2851d
+			defaultHierarchy: LocalDateTable_b297a4b9-71eb-4e55-8ebf-94d1e21a6a4b.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Start of Month'
+		formatString: General Date
+		lineageTag: 3c6a0ccc-be85-4f72-8c6c-76db586434c6
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Start of Month]
+
+		variation Variation
+			isDefault
+			relationship: 76ce1675-b3e0-4745-96bc-2447679b44f4
+			defaultHierarchy: LocalDateTable_829c1bd1-3cdd-49a0-86ed-6a02b1cb2c6e.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Start of Year'
+		formatString: General Date
+		lineageTag: 401c467b-a7e7-4c14-b228-e141c60d98bb
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Start of Year]
+
+		variation Variation
+			isDefault
+			relationship: eb7b4643-4362-4f53-884d-89ab7619129f
+			defaultHierarchy: LocalDateTable_c28454f5-93b1-4ea5-ad84-27d4b8f81757.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimCalender = calculated
+		mode: import
+		source =
+				
+				var mindate = MIN('FactInjuries'[InjuryDate])
+				var maxdate = MAX(FactInjuries[InjuryDate])
+				var BaseCalender = CALENDAR(mindate, maxdate)
+				RETURN
+				ADDCOLUMNS(
+				    BaseCalender,
+				    "Year", YEAR([Date]),
+				    "Quarter",QUARTER([Date]),
+				    "Month No",MONTH([Date]),
+				    "Week Num", WEEKNUM([Date]),
+				    "Day", DAY([Date]),
+				    "Month Name", FORMAT([Date], "MMMM"),
+				    "Month Short", FORMAT([Date], "MMM"),
+				    "DayName", FORMAT([Date], "dddd"),
+				    "Qtr Number", "Q" & QUARTER([Date]),
+				    "Year Month", FORMAT([Date], "YYYY MMMM"),
+				    "Year Quarter", FORMAT([Date], "YYYY") & "Q" & FORMAT([Date], "Q"),
+				    "Day Type", IF(WEEKDAY([Date], 2) > 5, "Weekend", "Weekday"),
+				    "Weekending", [Date] + (7 - WEEKDAY([Date])),
+				    "Start of Month", DATE(YEAR([Date]), MONTH([Date]), 1),
+				    "Start of Year", DATE(YEAR([Date]), 1, 1)
+				)
+
+	annotation PBI_Id = a7f176b37e0342e5bdb9366876c92b13
+

@@ -1,0 +1,66 @@
+table DimPlayer
+	lineageTag: 86ece5c7-6b84-4e75-b16b-67a6c38d330e
+
+	column PlayerDimKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: bc64dfdb-fd34-4244-b05f-c5fe7507ed21
+		summarizeBy: none
+		sourceColumn: PlayerDimKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column PlayerName
+		dataType: string
+		lineageTag: 46050f3b-7393-4ab7-8257-9df896e749a3
+		summarizeBy: none
+		sourceColumn: PlayerName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Gender
+		dataType: string
+		lineageTag: 128acd01-319f-48e7-933d-026102ddc7b1
+		summarizeBy: none
+		sourceColumn: Gender
+
+		annotation SummarizationSetBy = Automatic
+
+	column Age
+		dataType: int64
+		formatString: 0
+		lineageTag: 6e34a19e-d2a7-4a24-afe9-07a29da05e5a
+		summarizeBy: none
+		sourceColumn: Age
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Age Group'
+		dataType: string
+		lineageTag: 8108634b-7b93-44e4-a3a1-2ff466bc085b
+		summarizeBy: none
+		sourceColumn: Age Group
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimPlayer = m
+		mode: import
+		queryGroup: 'Dim Tables'
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents(#"Folder Source" & #"File Source"), null, true),
+				    DimPlayer_Sheet = Source{[Item="DimPlayer",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(DimPlayer_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"PlayerDimKey", Int64.Type}, {"PlayerName", type text}, {"Gender", type text}, {"Age", Int64.Type}}),
+				    #"Added Conditional Column" = Table.AddColumn(#"Changed Type", "Age Group", each if [Age] <= 20 then "≦20" else if [Age] <= 25 then "21-25" else if [Age] <= 30 then "26-30" else if [Age] <= 35 then "31-35" else ">36"),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Added Conditional Column",{{"Age Group", type text}})
+				in
+				    #"Changed Type1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

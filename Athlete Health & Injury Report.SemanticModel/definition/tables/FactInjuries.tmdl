@@ -1,0 +1,190 @@
+table FactInjuries
+	lineageTag: 05b5b4f4-9598-40ee-8f32-703d063d4bf8
+
+	column InjuryID
+		dataType: string
+		lineageTag: ebf28589-dfca-43f5-a76d-16ef0a0d1d41
+		summarizeBy: none
+		sourceColumn: InjuryID
+
+		annotation SummarizationSetBy = Automatic
+
+	column PlayerDimKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 8ed546b7-d00c-4d08-a4e3-dbd68b86ac45
+		summarizeBy: none
+		sourceColumn: PlayerDimKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column InjuryTypeDimKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 2a063860-fcad-49e6-a338-2e0b0b3fac9d
+		summarizeBy: none
+		sourceColumn: InjuryTypeDimKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column LocationDimKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: ffb5517a-bc9a-4568-b8cf-d6ba12321afa
+		summarizeBy: none
+		sourceColumn: LocationDimKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column ClubDimKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 2092f912-158f-4545-ad03-46058a474585
+		summarizeBy: none
+		sourceColumn: ClubDimKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column EventDimKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 93ed1054-8bb7-4830-94da-e18331665379
+		summarizeBy: none
+		sourceColumn: EventDimKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column TreatmentDimKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 7b5afeeb-2129-48a6-b511-ed8118d46cdf
+		summarizeBy: none
+		sourceColumn: TreatmentDimKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column CoachDimKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 7a2786c4-f5ae-4343-bfc7-8e4571e01ec3
+		summarizeBy: none
+		sourceColumn: CoachDimKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column InjuryDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 9797c702-23f7-43da-bad2-9138cdc37d68
+		summarizeBy: none
+		sourceColumn: InjuryDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column ReturnDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 80ca3a2e-63d7-42f0-bb02-23c3dfdb534f
+		summarizeBy: none
+		sourceColumn: ReturnDate
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Season
+		dataType: string
+		lineageTag: c9569723-94df-4705-af22-67116dd9e3e2
+		summarizeBy: none
+		sourceColumn: Season
+
+		annotation SummarizationSetBy = Automatic
+
+	column DaysToRecovery
+		dataType: int64
+		formatString: 0
+		lineageTag: 0b1292d9-1304-44ae-b89f-b9588144006a
+		summarizeBy: sum
+		sourceColumn: DaysToRecovery
+
+		annotation SummarizationSetBy = Automatic
+
+	column MinutesPlayedLast30Days
+		dataType: int64
+		formatString: 0
+		lineageTag: 19d6f28e-815e-43d0-b573-2c9c4b0bb95a
+		summarizeBy: sum
+		sourceColumn: MinutesPlayedLast30Days
+
+		annotation SummarizationSetBy = Automatic
+
+	column CostOfTreatmentEuros
+		dataType: double
+		lineageTag: 13da495e-57e3-4759-a860-29e77830818c
+		summarizeBy: sum
+		sourceColumn: CostOfTreatmentEuros
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column EstimatedDaysAbsent
+		dataType: int64
+		formatString: 0
+		lineageTag: 921bd5ea-fb37-425c-ae45-5f4e551a9eeb
+		summarizeBy: sum
+		sourceColumn: EstimatedDaysAbsent
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Player Risk'
+		dataType: string
+		lineageTag: 93409617-c690-454b-b9f1-dca9b3664418
+		summarizeBy: none
+		sourceColumn: Player Risk
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactInjuries = m
+		mode: import
+		queryGroup: 'Fact Tables'
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents(#"Folder Source" & #"File Source"), null, true),
+				    FactInjuries_Sheet = Source{[Item="FactInjuries",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(FactInjuries_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"InjuryID", type text}, {"PlayerDimKey", Int64.Type}, {"InjuryTypeDimKey", Int64.Type}, {"LocationDimKey", Int64.Type}, {"ClubDimKey", Int64.Type}, {"EventDimKey", Int64.Type}, {"TreatmentDimKey", Int64.Type}, {"CoachDimKey", Int64.Type}, {"InjuryDate", type date}, {"ReturnDate", type date}, {"Season", type text}, {"DaysToRecovery", Int64.Type}, {"MinutesPlayedLast30Days", Int64.Type}, {"CostOfTreatmentEuros", type number}, {"EstimatedDaysAbsent", Int64.Type}}),
+				    #"Added Conditional Column" = Table.AddColumn(#"Changed Type", "Player Risk", each if [DaysToRecovery] <= 30 then "Low Risk ≦30" else if [DaysToRecovery] <= 90 then "Medium Risk 31-90" else "High Risk 90+"),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Added Conditional Column",{{"Player Risk", type text}})
+				in
+				    #"Changed Type1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

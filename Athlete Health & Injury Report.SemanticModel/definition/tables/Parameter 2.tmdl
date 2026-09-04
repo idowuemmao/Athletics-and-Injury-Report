@@ -1,0 +1,48 @@
+table 'Parameter 2'
+	lineageTag: 9659671f-4f13-40d1-8c98-bf495fe10223
+
+	column Parameter
+		lineageTag: ed68caf4-c059-43e1-adbf-eb227973626b
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Parameter Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Parameter Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parameter Fields'
+		isHidden
+		lineageTag: 00cc7ac3-3c4c-4015-b37e-6389e5348f57
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Parameter Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parameter Order'
+		isHidden
+		formatString: 0
+		lineageTag: 1db74f40-a14f-449b-bfc1-961bda18954e
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Parameter 2' = calculated
+		mode: import
+		source =
+				{
+				    ("Count", NAMEOF('DAX & Measures'[Total Injuries]), 0),
+				    ("Amount", NAMEOF('DAX & Measures'[Treatment Cost]), 1)
+				}
+
+	annotation PBI_Id = 82401e66950c4713bcdce3487a6c1d48
+

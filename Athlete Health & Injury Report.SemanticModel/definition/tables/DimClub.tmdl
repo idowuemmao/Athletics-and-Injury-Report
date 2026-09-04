@@ -1,0 +1,63 @@
+table DimClub
+	lineageTag: c7c558fc-a4de-48a4-9fda-23d9b749e68d
+
+	column ClubDimKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: b3bb854b-9914-430a-8bbf-7093c9a5df22
+		summarizeBy: none
+		sourceColumn: ClubDimKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column ClubTeamName
+		dataType: string
+		lineageTag: 264135a5-87bb-4015-add7-d9da26c6fa90
+		summarizeBy: none
+		sourceColumn: ClubTeamName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Sport
+		dataType: string
+		lineageTag: 16e2f383-2d7f-4379-853d-cec8bf72b42f
+		summarizeBy: none
+		sourceColumn: Sport
+
+		annotation SummarizationSetBy = Automatic
+
+	column CompetitionLevel
+		dataType: string
+		lineageTag: 8c205a18-042e-4d3f-93ff-118b3a5770ce
+		summarizeBy: none
+		sourceColumn: CompetitionLevel
+
+		annotation SummarizationSetBy = Automatic
+
+	column SurfaceType
+		dataType: string
+		lineageTag: c51b06ef-a352-4dec-bbb0-3d4a9832df43
+		summarizeBy: none
+		sourceColumn: SurfaceType
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimClub = m
+		mode: import
+		queryGroup: 'Dim Tables'
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents(#"Folder Source" & #"File Source"), null, true),
+				    DimClub_Sheet = Source{[Item="DimClub",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(DimClub_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"ClubDimKey", Int64.Type}, {"ClubTeamName", type text}, {"Sport", type text}, {"CompetitionLevel", type text}, {"SurfaceType", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

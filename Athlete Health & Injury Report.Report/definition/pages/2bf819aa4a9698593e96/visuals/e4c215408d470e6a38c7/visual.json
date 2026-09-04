@@ -1,0 +1,31 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "e4c215408d470e6a38c7",
+  "position": {
+    "x": 13.014191908493963,
+    "y": 73.747087481465783,
+    "z": 4000,
+    "height": 145.32514297818255,
+    "width": 1713.535267951705,
+    "tabOrder": 17000
+  },
+  "visualGroup": {
+    "displayName": "Bar & KPI",
+    "groupMode": "ScaleMode",
+    "objects": {
+      "lockAspect": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

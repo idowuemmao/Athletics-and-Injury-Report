@@ -1,0 +1,595 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "69d72b197c030ab7ad4c",
+  "position": {
+    "x": 14.724004792970311,
+    "y": 215.3385700971908,
+    "z": 0,
+    "height": 454.60364798295836,
+    "width": 553.99068033550793,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "ZoomChartsScatterChartPaidA2C55E4B59078FDD51C4CD1C4D4E6623V9N8",
+    "query": {
+      "queryState": {
+        "category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DimInjuryType"
+                    }
+                  },
+                  "Property": "InjuryType"
+                }
+              },
+              "queryRef": "DimInjuryType.InjuryType",
+              "nativeQueryRef": "InjuryType"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DimInjuryType"
+                    }
+                  },
+                  "Property": "InjuryCause"
+                }
+              },
+              "queryRef": "DimInjuryType.InjuryCause",
+              "nativeQueryRef": "InjuryCause"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DimClub"
+                    }
+                  },
+                  "Property": "SurfaceType"
+                }
+              },
+              "queryRef": "DimClub.SurfaceType",
+              "nativeQueryRef": "SurfaceType"
+            }
+          ]
+        },
+        "sourceNodes": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DAX & Measures"
+                    }
+                  },
+                  "Property": "Avg Recovery(Days)"
+                }
+              },
+              "queryRef": "DAX & Measures.Avg Recovery(Days)",
+              "nativeQueryRef": "Avg Recovery(Days)"
+            }
+          ]
+        },
+        "targetNodes": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DAX & Measures"
+                    }
+                  },
+                  "Property": "Total Injuries"
+                }
+              },
+              "queryRef": "DAX & Measures.Total Injuries",
+              "nativeQueryRef": "Total Injuries"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "DAX & Measures"
+                  }
+                },
+                "Property": "Avg Recovery(Days)"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "objects": {
+      "navigation": [
+        {
+          "properties": {
+            "settings": {
+              "expr": {
+                "Literal": {
+                  "Value": "'{\"xy\":{\"T0\":{\"x\":-9056.23303487728,\"y\":-12210,\"r\":1615.0176789206025,\"w\":1615.0176789206025},\"T1\":{\"x\":-16565.51768281651,\"y\":-13830,\"r\":1615.0176789206025,\"w\":1615.0176789206025},\"T2\":{\"x\":-19726.889402457782,\"y\":-13380,\"r\":1615.0176789206025,\"w\":1615.0176789206025},\"T3\":{\"x\":-24666.909689108365,\"y\":-59700,\"r\":1615.0176789206025,\"w\":1615.0176789206025},\"T4\":{\"x\":-28754.71564185869,\"y\":-13350,\"r\":1615.0176789206025,\"w\":1615.0176789206025},\"T5\":{\"x\":-29282.028110778498,\"y\":-28380,\"r\":1615.0176789206025,\"w\":1615.0176789206025},\"T6\":{\"x\":-36965.28955076185,\"y\":-27420,\"r\":1615.0176789206025,\"w\":1615.0176789206025},\"T7\":{\"x\":-37602.77811854816,\"y\":-42990,\"r\":1615.0176789206025,\"w\":1615.0176789206025},\"T8\":{\"x\":-37826.29070839359,\"y\":-28440,\"r\":1615.0176789206025,\"w\":1615.0176789206025},\"T9\":{\"x\":-41233.64101652712,\"y\":-27780,\"r\":1615.0176789206025,\"w\":1615.0176789206025},\"T10\":{\"x\":-42748.81824774772,\"y\":-13290,\"r\":1615.0176789206025,\"w\":1615.0176789206025},\"T11\":{\"x\":-45023.560588695684,\"y\":-13020,\"r\":1615.0176789206025,\"w\":1615.0176789206025},\"T12\":{\"x\":-56517.81323994985,\"y\":-13470,\"r\":1615.0176789206025,\"w\":1615.0176789206025},\"T13\":{\"x\":-56983.05985352266,\"y\":-28020,\"r\":1615.0176789206025,\"w\":1615.0176789206025},\"T14\":{\"x\":-62233.77914351116,\"y\":-13620,\"r\":1615.0176789206025,\"w\":1615.0176789206025},\"T15\":{\"x\":-63653.05923189704,\"y\":-14400,\"r\":1615.0176789206025,\"w\":1615.0176789206025},\"T16\":{\"x\":-69887.45091399895,\"y\":-13080,\"r\":1615.0176789206025,\"w\":1615.0176789206025},\"T17\":{\"x\":-72279.67619114513,\"y\":-13530,\"r\":1615.0176789206025,\"w\":1615.0176789206025},\"T18\":{\"x\":-73383.63030550544,\"y\":-29880,\"r\":1615.0176789206025,\"w\":1615.0176789206025}},\"nav\":{\"hidden\":[],\"focused\":[],\"visibleNodes\":[\"T0\",\"T1\",\"T10\",\"T11\",\"T12\",\"T13\",\"T14\",\"T15\",\"T16\",\"T17\",\"T18\",\"T2\",\"T3\",\"T4\",\"T5\",\"T6\",\"T7\",\"T8\",\"T9\"],\"visibleLinks\":[]}}'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "colors1": [
+        {
+          "properties": {
+            "propertyCache": {
+              "expr": {
+                "Literal": {
+                  "Value": "'{\"source\":\"\",\"props\":{}}'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "shapes1": [
+        {
+          "properties": {
+            "propertyCache": {
+              "expr": {
+                "Literal": {
+                  "Value": "'{\"source\":\"\",\"props\":{}}'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "categoryColors1": [
+        {
+          "properties": {
+            "propertyCache": {
+              "expr": {
+                "Literal": {
+                  "Value": "'{\"source\":\"DimInjuryType.InjuryType\",\"props\":{\"Achilles Injury\":{\"color\":\"#654d65\"},\"Rib Injury\":{\"color\":\"#F4D25A\"},\"Facial Injury\":{\"color\":\"#3F213F\"},\"Fracture\":{\"color\":\"#3599B8\"},\"Contusion\":{\"color\":\"#67002E\"},\"Back Strain\":{\"color\":\"#663466\"},\"Shoulder Injury\":{\"color\":\"#A4DDEE\"},\"Muscle Strain\":{\"color\":\"#FB8281\"},\"Concussion\":{\"color\":\"#6E98B5\"},\"Ankle Sprain\":{\"color\":\"#C480A7\"},\"Tennis Elbow\":{\"color\":\"#B687AC\"},\"Shin Splints\":{\"color\":\"#7F898A\"},\"Eye Injury\":{\"color\":\"#5D8099\"},\"Knee Injury\":{\"color\":\"#4AC5BB\"},\"Finger Injury\":{\"color\":\"#EC64A9\"},\"Hamstring Injury\":{\"color\":\"#DFBFBF\"},\"Wrist Strain\":{\"color\":\"#28738A\"},\"Ligament Sprain\":{\"color\":\"#5F6B6D\"},\"Tendon Injury\":{\"color\":\"#FDAB89\"}}}'"
+                }
+              }
+            }
+          }
+        },
+        {
+          "properties": {
+            "fill": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 8,
+                      "Percent": 0.2
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "scopeId": {
+                  "Comparison": {
+                    "ComparisonKind": 0,
+                    "Left": {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Entity": "DimInjuryType"
+                          }
+                        },
+                        "Property": "InjuryType"
+                      }
+                    },
+                    "Right": {
+                      "Literal": {
+                        "Value": "'Achilles Injury'"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "trialLicense": [
+        {
+          "properties": {
+            "validLicenseProvided": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "preTrialAccessStartDate": {
+              "expr": {
+                "Literal": {
+                  "Value": "1788530940000D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "categoryColors2": [
+        {
+          "properties": {
+            "propertyCache": {
+              "expr": {
+                "Literal": {
+                  "Value": "'{\"source\":\"DimInjuryType.InjuryCause\",\"props\":{\"Fall\":{\"color\":\"#C480A7\"},\"Overuse\":{\"color\":\"#6E98B5\"},\"Contact\":{\"color\":\"#364B59\"},\"Non-contact\":{\"color\":\"#663466\"}}}'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "nodes": [
+        {
+          "properties": {
+            "useCategoryAsLabel": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "valueAxis": [
+        {
+          "properties": {
+            "enableGrid": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "useFixedAspectRatio": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "gridColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": -0.1
+                    }
+                  }
+                }
+              }
+            },
+            "zeroLineColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": -0.1
+                    }
+                  }
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": -0.1
+                    }
+                  }
+                }
+              }
+            },
+            "titleFontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": -0.1
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "categoryColors3": [
+        {
+          "properties": {
+            "propertyCache": {
+              "expr": {
+                "Literal": {
+                  "Value": "'{\"source\":\"DimClub.SurfaceType\",\"props\":{\"Indoor Track\":{\"color\":\"#EC64A9\"},\"Track\":{\"color\":\"#5F6B6D\"},\"Road\":{\"color\":\"#4AC5BB\"},\"Field\":{\"color\":\"#663466\"},\"Gym Floor\":{\"color\":\"#67002E\"},\"Training Mat\":{\"color\":\"#FB8281\"},\"Ring\":{\"color\":\"#DFBFBF\"},\"Wooden Floor\":{\"color\":\"#F4D25A\"},\"Indoor Court\":{\"color\":\"#3F213F\"},\"Artificial Turf\":{\"color\":\"#364B59\"},\"Grass\":{\"color\":\"#6E98B5\"},\"Outdoor Court\":{\"color\":\"#3599B8\"},\"Clay\":{\"color\":\"#C480A7\"},\"Hard Court\":{\"color\":\"#5D8099\"}}}'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {}
+        }
+      ],
+      "categoryColors4": [
+        {
+          "properties": {
+            "propertyCache": {
+              "expr": {
+                "Literal": {
+                  "Value": "'{\"source\":\"DimPlayer.Age Group\",\"props\":{\">36\":{\"color\":\"#364B59\"},\"26-30\":{\"color\":\"#6E98B5\"},\"≦20\":{\"color\":\"#C480A7\"},\"31-35\":{\"color\":\"#67002E\"},\"21-25\":{\"color\":\"#663466\"}}}'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "categoryColors5": [
+        {
+          "properties": {
+            "propertyCache": {
+              "expr": {
+                "Literal": {
+                  "Value": "'{\"source\":\"DimCalender.Year Month\",\"props\":{\"2022 August\":{\"color\":\"#C480A7\"},\"2022 September\":{\"color\":\"#5F6B6D\"},\"2022 July\":{\"color\":\"#5D8099\"},\"2023 January\":{\"color\":\"#FDAB89\"},\"2023 March\":{\"color\":\"#A78F8F\"},\"2023 February\":{\"color\":\"#A4DDEE\"},\"2023 June\":{\"color\":\"#28738A\"},\"2023 April\":{\"color\":\"#FB8281\"},\"2023 May\":{\"color\":\"#168980\"},\"2022 June\":{\"color\":\"#3F213F\"},\"2022 April\":{\"color\":\"#364B59\"},\"2022 May\":{\"color\":\"#3599B8\"},\"2022 January\":{\"color\":\"#67002E\"},\"2022 March\":{\"color\":\"#EC64A9\"},\"2022 February\":{\"color\":\"#6E98B5\"},\"2023 August\":{\"color\":\"#F4D25A\"},\"2023 September\":{\"color\":\"#B59525\"},\"2023 July\":{\"color\":\"#B687AC\"},\"2023 December\":{\"color\":\"#7F898A\"},\"2023 October\":{\"color\":\"#BB4A4A\"},\"2023 November\":{\"color\":\"#293537\"},\"2022 October\":{\"color\":\"#4AC5BB\"},\"2022 December\":{\"color\":\"#663466\"},\"2022 November\":{\"color\":\"#DFBFBF\"},\"2025 April\":{\"color\":\"#7E4B36\"},\"2025 May\":{\"color\":\"#373D49\"},\"2025 June\":{\"color\":\"#544848\"},\"2024 May\":{\"color\":\"#7D3231\"},\"2024 April\":{\"color\":\"#475052\"},\"2024 June\":{\"color\":\"#0F5C55\"},\"2025 February\":{\"color\":\"#52354C\"},\"2025 March\":{\"color\":\"#016AB8\"},\"2025 January\":{\"color\":\"#0D262E\"},\"2024 January\":{\"color\":\"#1B4D5C\"},\"2024 February\":{\"color\":\"#7B4F71\"},\"2024 November\":{\"color\":\"#796419\"},\"2024 December\":{\"color\":\"#BD7150\"},\"2024 October\":{\"color\":\"#303637\"},\"2024 July\":{\"color\":\"#706060\"},\"2024 August\":{\"color\":\"#6A9FB0\"},\"2024 September\":{\"color\":\"#476A75\"},\"2024 March\":{\"color\":\"#1C2325\"}}}'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "toolbar": [
+        {
+          "properties": {}
+        }
+      ],
+      "outsideLabels": [
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": -0.1
+                    }
+                  }
+                }
+              }
+            },
+            "backgroundOpacity": {
+              "expr": {
+                "Literal": {
+                  "Value": "0L"
+                }
+              }
+            },
+            "fontSizeMode": {
+              "expr": {
+                "Literal": {
+                  "Value": "'fixed'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "license": [
+        {
+          "properties": {
+            "lastVersionUsed": {
+              "expr": {
+                "Literal": {
+                  "Value": "'v1.8.301.0'"
+                }
+              }
+            },
+            "lastVersionUpdated": {
+              "expr": {
+                "Literal": {
+                  "Value": "1788530940000D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "darkMode": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "stylePreset": [
+        {
+          "properties": {
+            "name": {
+              "expr": {
+                "Literal": {
+                  "Value": "'None'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#364B59'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": 0
+                    }
+                  }
+                }
+              }
+            },
+            "width": {
+              "expr": {
+                "Literal": {
+                  "Value": "3D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Recovery Days vs Injury Frequency'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "16D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'By Injury Type → Cause → Surface'"
+                }
+              }
+            },
+            "italic": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": 0
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'wf_standard-font, helvetica, arial, sans-serif'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

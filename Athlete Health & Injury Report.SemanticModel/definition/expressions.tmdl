@@ -1,0 +1,16 @@
+expression 'Folder Source' = "C:\Users\idgre\Videos\Programming\FP20 Analytics\Challenge_29_Athlete Health & Injury Dataset (Star Schema)\" meta [IsParameterQuery=true, Type="Any", IsParameterQueryRequired=true]
+	lineageTag: 5c110ab8-38ac-45f3-b180-f24b8f57c071
+	queryGroup: 'Data Source'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Text
+
+expression 'File Source' = "Challenge_29_Athlete Health & Injury Dataset (Star Schema).xlsx" meta [IsParameterQuery=true, Type="Any", IsParameterQueryRequired=true]
+	lineageTag: 3b1ce022-a301-4dd0-b036-e9722b6c6a18
+	queryGroup: 'Data Source'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Text
+

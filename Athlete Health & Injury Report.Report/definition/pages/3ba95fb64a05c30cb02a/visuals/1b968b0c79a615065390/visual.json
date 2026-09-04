@@ -1,0 +1,425 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "1b968b0c79a615065390",
+  "position": {
+    "x": 0,
+    "y": 0,
+    "z": 2000,
+    "height": 1081.0434782608695,
+    "width": 1920,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "ZoomChartsDrillDownNetworkProA1D59E3B59078E6D50A4CB1C3D4E2129C500",
+    "query": {
+      "queryState": {
+        "Nodes": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DimInjuryType"
+                    }
+                  },
+                  "Property": "BodyPart"
+                }
+              },
+              "queryRef": "DimInjuryType.BodyPart",
+              "nativeQueryRef": "BodyPart"
+            }
+          ]
+        },
+        "linkLabelField": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DimTreatment"
+                    }
+                  },
+                  "Property": "TreatmentMethod"
+                }
+              },
+              "queryRef": "DimTreatment.TreatmentMethod",
+              "nativeQueryRef": "TreatmentMethod"
+            }
+          ]
+        },
+        "Size": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DAX & Measures"
+                    }
+                  },
+                  "Property": "Total Injuries"
+                }
+              },
+              "queryRef": "DAX & Measures.Total Injuries",
+              "nativeQueryRef": "Total Injuries"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "DAX & Measures"
+                  }
+                },
+                "Property": "Total Injuries"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "objects": {
+      "toolbar": [
+        {
+          "properties": {
+            "darkMode": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "zoomControl": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "trialLicense": [
+        {
+          "properties": {
+            "validLicenseProvided": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "navigation": [
+        {
+          "properties": {
+            "saveState": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "saveStateData": {
+              "expr": {
+                "Literal": {
+                  "Value": "'{\"xy\":{\"0:Nose\":{\"x\":557.5524367434205,\"y\":-247.20197193756098,\"r\":40,\"w\":40},\"0:Hand\":{\"x\":-940.3059052969452,\"y\":31.518906986371945,\"r\":40.30612244897959,\"w\":40.30612244897959},\"0:Jaw\":{\"x\":477.0286660143542,\"y\":-173.9975391882181,\"r\":40.61224489795919,\"w\":40.61224489795919},\"0:Elbow\":{\"x\":-556.0262283118768,\"y\":-313.62689724333495,\"r\":56.875,\"w\":56.875},\"0:Hip\":{\"x\":-248.95213279561023,\"y\":87.83616392921398,\"r\":56.951530612244895,\"w\":56.951530612244895},\"0:Foot\":{\"x\":-538.3993098219277,\"y\":689.3826929959839,\"r\":58.022959183673464,\"w\":58.022959183673464},\"0:Face\":{\"x\":354.50629725467456,\"y\":-302.9539073253793,\"r\":59.36224489795919,\"w\":59.36224489795919},\"0:Eye\":{\"x\":629.1578182436314,\"y\":-371.82570525423114,\"r\":59.744897959183675,\"w\":59.744897959183675},\"0:Ribs\":{\"x\":83.9630890223788,\"y\":-47.330534049711744,\"r\":59.97448979591837,\"w\":59.97448979591837},\"0:Wrist\":{\"x\":659.9236032873707,\"y\":-89.76260115699186,\"r\":61.16071428571429,\"w\":61.16071428571429},\"0:Calf\":{\"x\":-952.3170400885867,\"y\":540.1196746475366,\"r\":61.92602040816327,\"w\":61.92602040816327},\"0:Finger\":{\"x\":759.0069299843369,\"y\":-240.70567205595296,\"r\":62.92091836734694,\"w\":62.92091836734694},\"0:Shin\":{\"x\":-40.22059684665926,\"y\":547.7397931961997,\"r\":64.0688775510204,\"w\":64.0688775510204},\"0:Achilles\":{\"x\":-1206.0670868149664,\"y\":678.4476975459743,\"r\":67.16836734693878,\"w\":67.16836734693878},\"0:Hamstring\":{\"x\":-629.7696397922504,\"y\":386.8046760289495,\"r\":78.95408163265307,\"w\":78.95408163265307},\"0:Back\":{\"x\":-222.14451470608154,\"y\":-112.39339030258992,\"r\":87.3341836734694,\"w\":87.3341836734694},\"0:Head\":{\"x\":401.66287611523484,\"y\":-569.1131266714139,\"r\":89.2091836734694,\"w\":89.2091836734694},\"0:Ankle\":{\"x\":-352.2379586974327,\"y\":441.8475989904868,\"r\":92.88265306122449,\"w\":92.88265306122449},\"0:Shoulder\":{\"x\":-57.517859774363316,\"y\":-376.07099652226657,\"r\":94.41326530612244,\"w\":94.41326530612244},\"0:Knee\":{\"x\":492.0343976325977,\"y\":372.40720480559366,\"r\":100,\"w\":100}},\"nav\":{\"hidden\":[],\"focused\":[]}}﷐{\"zoom\":0.6753457153450018,\"sceneCenterX\":-142.03612080118364,\"sceneCenterY\":47.998300290992916}﷐{\"0:Back\":true,\"0:Head\":true,\"0:Knee\":true,\"0:Ankle\":true,\"0:Hamstring\":true,\"0:Hip\":true,\"0:Calf\":true,\"0:Achilles\":true,\"0:Shin\":true,\"0:Finger\":true,\"0:Elbow\":true,\"0:Shoulder\":true,\"0:Ribs\":true,\"0:Wrist\":true,\"0:Eye\":true,\"0:Face\":true,\"0:Foot\":true,\"0:Jaw\":true,\"0:Nose\":true,\"0:Hand\":true}'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "fillSettings": [
+        {
+          "properties": {
+            "gradient": {
+              "expr": {
+                "Literal": {
+                  "Value": "'derived'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "category1": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "customInsideLabel": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "customOutsideLabel": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "filterSettings": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "legend": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "layout": [
+        {
+          "properties": {
+            "layoutMode": {
+              "expr": {
+                "Literal": {
+                  "Value": "'dynamic'"
+                }
+              }
+            },
+            "static": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "hierarchy": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "radial": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "dynamic": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "nodes": [
+        {
+          "properties": {
+            "colorMode": {
+              "expr": {
+                "Literal": {
+                  "Value": "'dynamic'"
+                }
+              }
+            },
+            "nodeType": {
+              "expr": {
+                "Literal": {
+                  "Value": "'default'"
+                }
+              }
+            },
+            "shape": {
+              "expr": {
+                "Literal": {
+                  "Value": "'circle'"
+                }
+              }
+            },
+            "minRadius": {
+              "expr": {
+                "Literal": {
+                  "Value": "50L"
+                }
+              }
+            },
+            "allowLabelOverlap": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "links": [
+        {
+          "properties": {
+            "dashed": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "fromDecoration": {
+              "expr": {
+                "Literal": {
+                  "Value": "''"
+                }
+              }
+            },
+            "toDecoration": {
+              "expr": {
+                "Literal": {
+                  "Value": "'arrow'"
+                }
+              }
+            },
+            "colorMode": {
+              "expr": {
+                "Literal": {
+                  "Value": "'fixed'"
+                }
+              }
+            },
+            "fillColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": 0
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "insideLabels": [
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": 0
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "outsideLabels": [
+        {
+          "properties": {
+            "backgroundColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": 0
+                    }
+                  }
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 2,
+                      "Percent": 0
+                    }
+                  }
+                }
+              }
+            },
+            "backgroundOpacity": {
+              "expr": {
+                "Literal": {
+                  "Value": "80L"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "popup": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "isHidden": true
+}

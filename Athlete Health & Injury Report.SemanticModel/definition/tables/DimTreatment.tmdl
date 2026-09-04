@@ -1,0 +1,47 @@
+table DimTreatment
+	lineageTag: 9987e5a9-f916-433e-8ef7-1867c72a6e04
+
+	column TreatmentDimKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: baa0ddee-184e-460b-b02a-a1a2955ca409
+		summarizeBy: none
+		sourceColumn: TreatmentDimKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column TreatmentMethod
+		dataType: string
+		lineageTag: 33ad2e5b-728b-4889-8e43-afcd73e03ea9
+		summarizeBy: none
+		sourceColumn: TreatmentMethod
+
+		annotation SummarizationSetBy = Automatic
+
+	column Outcome
+		dataType: string
+		lineageTag: f4de73f3-596e-489e-9297-0646969bf582
+		summarizeBy: none
+		sourceColumn: Outcome
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimTreatment = m
+		mode: import
+		queryGroup: 'Dim Tables'
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents(#"Folder Source" & #"File Source"), null, true),
+				    DimTreatment_Sheet = Source{[Item="DimTreatment",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(DimTreatment_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"TreatmentDimKey", Int64.Type}, {"TreatmentMethod", type text}, {"Outcome", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

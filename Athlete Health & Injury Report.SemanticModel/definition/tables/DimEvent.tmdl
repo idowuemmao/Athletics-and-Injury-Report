@@ -1,0 +1,47 @@
+table DimEvent
+	lineageTag: c7fa6373-a769-4813-b249-ce56384786fb
+
+	column EventDimKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 59b7f4cb-0fa1-4e26-937d-2396bcf4b5c5
+		summarizeBy: none
+		sourceColumn: EventDimKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column EventType
+		dataType: string
+		lineageTag: eb8c4d5b-0e33-405f-bb23-b7bfbab83c5c
+		summarizeBy: none
+		sourceColumn: EventType
+
+		annotation SummarizationSetBy = Automatic
+
+	column EventName
+		dataType: string
+		lineageTag: 573adc0b-8ff8-441e-bcea-307a80ac7976
+		summarizeBy: none
+		sourceColumn: EventName
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimEvent = m
+		mode: import
+		queryGroup: 'Dim Tables'
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents(#"Folder Source" & #"File Source"), null, true),
+				    DimEvent_Sheet = Source{[Item="DimEvent",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(DimEvent_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"EventDimKey", Int64.Type}, {"EventType", type text}, {"EventName", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

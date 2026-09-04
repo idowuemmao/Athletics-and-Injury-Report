@@ -1,0 +1,52 @@
+table Parameter
+	lineageTag: aca52400-d581-4ab6-87b6-57224920c1a2
+
+	column Parameter
+		lineageTag: 67b14593-c6f5-4c7f-be21-c20c1f6dda3e
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Parameter Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Parameter Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parameter Fields'
+		isHidden
+		lineageTag: ca9fc5cf-39ba-4901-a671-271dc61573ce
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Parameter Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parameter Order'
+		isHidden
+		formatString: 0
+		lineageTag: 4a713b32-18c2-47ad-8491-26fe7266a914
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Parameter = calculated
+		mode: import
+		source =
+				{
+				    ("Total Cost", NAMEOF('DAX & Measures'[Treatment Cost]), 0),
+				    ("Total Injuries", NAMEOF('DAX & Measures'[Total Injuries]), 1),
+				    ("Avg day of Recovery", NAMEOF('DAX & Measures'[Avg Recovery(Days)]), 2),
+				    ("Avg Minutes 30D", NAMEOF('DAX & Measures'[Avg Mins Played]), 3),
+				    ("Avg Cost Per Injury", NAMEOF('DAX & Measures'[Cost per Injury]), 4),
+				    ("Total Mins", NAMEOF('DAX & Measures'[Total Minutes Played]), 5)
+				}
+
+	annotation PBI_Id = e35c01c229d44a2e874e44a27c1a046a
+

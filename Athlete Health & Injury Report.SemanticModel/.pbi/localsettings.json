@@ -1,0 +1,41 @@
+{
+  "version": "1.0",
+  "settings": {
+    "DataSourceSettings": {
+      "DataSources": [
+        {
+          "name": "Athletics-and-Injury-Report",
+          "connectionDetails": {
+            "protocol": "tds",
+            "address": {
+              "server": "Athletics-and-Injury-Report-prod.database.windows.net",
+              "database": "AltheticInjuryDW"
+            },
+            "authentication": {
+              "kind": "UsernamePassword",
+              "credentials": {
+                "username": "emmy.idowu@heraldsport.com",
+                "password": "Alt@hu1#Pr0d2026"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "ReportSettings": {
+      "useNewFilterPane": true,
+      "isPinFilterPaneExpanded": false,
+      "defaultDrillFilterOtherVisuals": true
+    },
+    "QueryCacheSettings": {
+      "enabled": true,
+      "cacheLocation": "C:\\Users\\Emmy.idowu\\AppData\\Local\\Microsoft\\Power BI Desktop\\QueryCache"
+    },
+    "LocalEnvironment": {
+      "workspacePath": "C:\\Users\\Emmy.idowu\\Documents\\PowerBI\\Athletics-and-Injury-Report",
+      "serviceEndpoint": "https://api.powerbi.com/v1.0/myorg",
+      "tenantId": "a3f82c91-7d45-4e12-bb63-92f1d08e4a17",
+      "gatewayObjectId": "f7c19d34-2b88-4f56-9e01-cc82a73b5d29"
+    }
+  }
+}
